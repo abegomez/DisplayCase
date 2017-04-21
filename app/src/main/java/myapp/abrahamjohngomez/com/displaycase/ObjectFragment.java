@@ -15,7 +15,8 @@ import android.widget.TextView;
  */
 
 public class ObjectFragment extends Fragment {
-    public static final String ARG_OBJECT = "objct";
+    public static final String ITEM_NAME = "Item name here";
+    public static final String ITEM_DESCRIPTION = "Item description here";
 
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -25,10 +26,10 @@ public class ObjectFragment extends Fragment {
                 R.layout.fragment_object_layout, container, false);
 
         Bundle args = getArguments();
-        ((TextView) rootView.findViewById(android.R.id.text1)).setText(
-                Integer.toString(args.getInt(ARG_OBJECT)));
+        TextView itemName = (TextView) rootView.findViewById(R.id.tvItemName);
+        itemName.setText(args.getString(ITEM_NAME));
+        TextView textTest = (TextView) rootView.findViewById(R.id.tvDescription);
+        textTest.setText(args.getString(ITEM_DESCRIPTION));
         return rootView;
-
     }
-
 }

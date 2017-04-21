@@ -1,31 +1,35 @@
 package myapp.abrahamjohngomez.com.displaycase;
 
-import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.os.Bundle;
+
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+
+import java.util.List;
 
 /**
  * Created by ryuhyoko on 10/30/2016.
  */
 
 public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
-    public CollectionPagerAdapter(FragmentManager fm) {
+    private static int count = 1;
+    private List<Fragment> fragments;
+
+    public CollectionPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
+
         super(fm);
+        this.fragments = fragments;
     }
 
     @Override
-    public Fragment getItem(int i) {
-        Fragment fragment = new ObjectFragment();
-        Bundle args = new Bundle();
-        args.putInt(ObjectFragment.ARG_OBJECT, i + 1);
-        fragment.setArguments(args);
-        return fragment;
+    public Fragment getItem(int position) {
+        return this.fragments.get(position);
     }
 
     @Override
     public int getCount() {
-        return 100;
+        return this.fragments.size();
     }
 
     @Override
