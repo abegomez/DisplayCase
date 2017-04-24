@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -15,16 +16,20 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 
-public class AddNewItem extends AppCompatActivity implements View.OnClickListener{
+public class AddNewItemActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btScan, btAddItem;
     private TextView tvFormatTxt, tvContentTxt, tvItemName, tvItemDescription, tvIsbn, tvCondition;
+    private ImageButton btZoomOrAddImage;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_barcode);
+        setResult(RESULT_CANCELED);
         btScan = (Button) findViewById(R.id.btScan);
+        btScan.setOnClickListener(this);
         btAddItem = (Button) findViewById(R.id.btAddNewItem);
         btAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -32,7 +37,21 @@ public class AddNewItem extends AppCompatActivity implements View.OnClickListene
                 onAddItemClick();
             }
         });
-        btScan.setOnClickListener(this);
+
+        btZoomOrAddImage = (ImageButton) findViewById(R.id.ibZoomOrAddImage);
+        btZoomOrAddImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onImageClick();
+            }
+        });
+        btZoomOrAddImage.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                onImageLongClick();
+                return true;
+            }
+        });
         tvFormatTxt = (TextView) findViewById(R.id.tvScan_format);
         tvContentTxt = (TextView) findViewById(R.id.tvScan_content);
         tvItemName = (TextView) findViewById(R.id.tvAddItemName);
@@ -62,9 +81,7 @@ public class AddNewItem extends AppCompatActivity implements View.OnClickListene
             toast.show();
         }
     }
-
-    public void onAddItemClick() {
-
+    private void onAddItemClick() {
         Intent intent = new Intent();
         intent.putExtra("name", tvItemName.getText().toString());
         intent.putExtra("description", tvItemDescription.getText().toString());
@@ -72,6 +89,14 @@ public class AddNewItem extends AppCompatActivity implements View.OnClickListene
         intent.putExtra("condition", tvCondition.getText().toString());
         setResult(RESULT_OK, intent);
         finish();
+    }
+    private void  onImageClick() {
+
+        System.out.println("image clicked");
+    }
+    private void onImageLongClick() {
+
+        System.out.println("image long clicked");
     }
 
 }

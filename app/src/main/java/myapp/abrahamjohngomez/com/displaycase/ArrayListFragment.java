@@ -63,7 +63,7 @@ public class ArrayListFragment extends Fragment {
         View tvName = v.findViewById(R.id.tvItemName);
         View tvDescription = v.findViewById(R.id.tvDescription);
         View tvIsbn = v.findViewById(R.id.tvIsbn);
-        ((TextView)tvName).setText(args.getString("itemName"));
+        ((TextView)tvName).setText(args.getString("itemDescription"));
         ((TextView)tvDescription).setText(args.getString("itemDescription"));
         ((TextView)tvIsbn).setText("ISBN:" + String.valueOf(args.getLong("itemIsbn")));
 

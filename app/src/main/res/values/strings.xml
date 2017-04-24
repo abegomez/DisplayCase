@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Display Case</string>
+    <string name="sampleText">I love programming so much.  I really want this app to look great.
+        I imagine that it will look similar to the layout of the Yahoo sports app.
+    </string>
+    <string name="title_activity_scan_barcode">ScanBarcode</string>
+    <string name="scan">Scan</string>
+    <string name="description_zoom_touch_close"></string>
 </resources>

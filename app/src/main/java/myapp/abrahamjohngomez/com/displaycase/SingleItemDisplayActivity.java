@@ -46,7 +46,7 @@ public class SingleItemDisplayActivity extends FragmentActivity {
     }
 
     public void btScanNew(View v) {
-        Intent intent = new Intent(this, AddNewItem.class);
+        Intent intent = new Intent(this, AddNewItemActivity.class);
         startActivityForResult(intent, ADD_ITEM_RESULT_CODE);
 
     }
@@ -61,6 +61,7 @@ public class SingleItemDisplayActivity extends FragmentActivity {
             System.out.println(resultCode);
         }
     }
+
 }
 
 
