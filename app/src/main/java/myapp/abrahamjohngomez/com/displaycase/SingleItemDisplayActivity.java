@@ -6,10 +6,15 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import db.DbHandler;
 
 public class SingleItemDisplayActivity extends FragmentActivity {
     CollectionPagerAdapter mCollectionPagerAdapter;
@@ -18,16 +23,29 @@ public class SingleItemDisplayActivity extends FragmentActivity {
 
     public static int count = 10;
 
-    private List<Fragment> getFragments() {
-        Item newItem = new Item();
-        newItem.setName("Another Item");
-        newItem.setDescription("Here is a different item.");
-        newItem.setId(344442);
-        newItem.setIsbn(2342345);
+//    private List<Fragment> getFragments() {
+//        Item newItem = new Item();
+//        //String name, String isbn, int id, String description, String image, Date purchased, String condition
+//        newItem.setName("Another Item");
+//        newItem.setDescription("Here is a different item.");
+//        newItem.setId(344442);
+//        newItem.setIsbn("2342345");
+//        List<Fragment> fList = new ArrayList<Fragment>();
+//        fList.add(ArrayListFragment.newInstance(newItem));
+//        return fList;
+//    }
+    private List<Fragment> getFragmentsFromDb() {
         List<Fragment> fList = new ArrayList<Fragment>();
-        fList.add(ArrayListFragment.newInstance("Test name", 1234, 2345, "Item Description"));
-        fList.add(ArrayListFragment.newInstance("A different name", 233, 44555, "This is a different item"));
-        fList.add(ArrayListFragment.newInstance(newItem));
+        DbHandler db = new DbHandler(this);
+        Log.d("Reading: ", "Reading all items..");
+        List<Item> items = db.getAllItems();
+
+        for(Item it : items) {
+            fList.add(
+                    ArrayListFragment.newInstance(it.getName(), it.getIsbn(), it.getId(),it.getDescription()
+                    , it.getImage(), it.getPurchased(), it.getCondition()
+                    ));
+        }
         return fList;
     }
 
@@ -36,7 +54,32 @@ public class SingleItemDisplayActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_item_display);
 
-        List<Fragment> fragments = getFragments();
+
+
+
+
+        //test db
+        Item item = new Item("test name", "isbn number", 4, "item description", "image src", DateFormat.getDateTimeInstance().format(new Date()), "condition");
+
+        DbHandler db = new DbHandler(this);
+        Log.d("Insert: ", "Inserting ..");
+        db.insertItem(item);
+
+        //print db
+        Log.d("Reading: ", "Reading all items..");
+        List<Item> items = db.getAllItems();
+
+        for(Item it : items) {
+            String log = "ID: " + it.getId() + ", Name: " + it.getName() + ", Description: " + it.getDescription()
+                    + ", ISBN: " + it.getIsbn() + ", Image src: " + it.getImage() + ", Purchased: " + it.getPurchased()
+                    + ", Condition: " + it.getCondition();
+
+            //Writing items to log
+            Log.d("Item: : ", log);
+
+        }
+
+        List<Fragment> fragments = getFragmentsFromDb();
         mCollectionPagerAdapter = new CollectionPagerAdapter(
                 getSupportFragmentManager(), fragments);
 

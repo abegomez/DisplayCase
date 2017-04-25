@@ -11,11 +11,11 @@ import java.util.Date;
 public class Item {
 
     protected String name;
-    protected long isbn;
+    protected String isbn;
     protected int id;
     protected String description;
     protected String image;
-    protected Date purchased;
+    protected String purchased;
     protected String condition;
 
 
@@ -23,6 +23,15 @@ public class Item {
 
     public  Item() {
 
+    }
+    public Item(String name, String isbn, int id, String description, String image, String purchased, String condition) {
+        this.name = name;
+        this.isbn = isbn;
+        this.id = id;
+        this.description = description;
+        this.image = image;
+        this.purchased = purchased;
+        this.condition = condition;
     }
 
     public String getImage() {
@@ -33,11 +42,11 @@ public class Item {
         this.image = image;
     }
 
-    public Date getPurchased() {
+    public String getPurchased() {
         return purchased;
     }
 
-    public void setPurchased(Date purchased) {
+    public void setPurchased(String purchased) {
         this.purchased = purchased;
     }
 
@@ -57,11 +66,11 @@ public class Item {
         this.name = name;
     }
 
-    public long getIsbn() {
+    public String getIsbn() {
         return isbn;
     }
 
-    public void setIsbn(long isbn) {
+    public void setIsbn(String isbn) {
         this.isbn = isbn;
     }
 

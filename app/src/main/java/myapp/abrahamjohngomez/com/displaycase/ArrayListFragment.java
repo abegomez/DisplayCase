@@ -27,23 +27,40 @@ public class ArrayListFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
-    static ArrayListFragment newInstance(String itemName, long isbn, int id, String itemDescription) {
+    static ArrayListFragment newInstance(String itemName, String isbn, int id, String itemDescription,
+                                         String image, String purchased, String condition) {
         ArrayListFragment f = new ArrayListFragment();
         Bundle args = new Bundle();
         args.putString("itemName", itemName);
-        args.putLong("itemIsbn", isbn);
+        args.putString("itemIsbn", isbn);
         args.putInt("itemId", id);
         args.putString("itemDescription", itemDescription);
+        args.putString("itemImageSrc", image);
+        args.putString("itemPurchased", purchased);
+        args.putString("itemCondition", condition);
         f.setArguments(args);
         return f;
     }
+    /*
+    protected String name;
+    protected String isbn;
+    protected int id;
+    protected String description;
+    protected String image;
+    protected String purchased;
+    protected String condition;
+     */
     static ArrayListFragment newInstance(Item item) {
         ArrayListFragment f = new ArrayListFragment();
         Bundle args = new Bundle();
         args.putString("itemName", item.getName());
-        args.putLong("itemIsbn", item.getIsbn());
+        args.putString("itemIsbn", item.getIsbn());
         args.putInt("itemId", item.getId());
         args.putString("itemDescription", item.getDescription());
+        args.putString("itemImageSrc", item.getImage());
+        args.putString("itemPurchased", item.getPurchased());
+        args.putString("itemCondition", item.getCondition());
+
         f.setArguments(args);
         return f;
     }
@@ -63,9 +80,16 @@ public class ArrayListFragment extends Fragment {
         View tvName = v.findViewById(R.id.tvItemName);
         View tvDescription = v.findViewById(R.id.tvDescription);
         View tvIsbn = v.findViewById(R.id.tvIsbn);
-        ((TextView)tvName).setText(args.getString("itemDescription"));
+        View tvId = v.findViewById(R.id.tvId);
+        View ivImage = v.findViewById(R.id.ivImage);
+        View tvPurchased = v.findViewById(R.id.tvPurchased);
+        View tvCondition = v.findViewById(R.id.tvCondition);
+        ((TextView)tvName).setText(args.getString("itemName"));
         ((TextView)tvDescription).setText(args.getString("itemDescription"));
-        ((TextView)tvIsbn).setText("ISBN:" + String.valueOf(args.getLong("itemIsbn")));
+        ((TextView)tvIsbn).setText("ISBN:" + args.getString("itemIsbn"));
+        ((TextView)tvId).setText("ID:" + String.valueOf(args.getInt("itemId")));
+        ((TextView)tvPurchased).setText("Purchased:" + args.getString("itemPurchased"));
+        ((TextView)tvCondition).setText("Condition:" + args.getString("itemCondition"));
 
         return v;
     }
