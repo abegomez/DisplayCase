@@ -15,7 +15,7 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-
+//TODO: change to single onClick method with switch: case:R.id.buttonID
 public class AddNewItemActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btScan, btAddItem;
@@ -83,20 +83,24 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
     }
     private void onAddItemClick() {
         Intent intent = new Intent();
-        intent.putExtra("name", tvItemName.getText().toString());
-        intent.putExtra("description", tvItemDescription.getText().toString());
-        intent.putExtra("isbn", tvIsbn.getText().toString());
-        intent.putExtra("condition", tvCondition.getText().toString());
+        intent.putExtra("itemName", tvItemName.getText().toString());
+        intent.putExtra("itemDescription", tvItemDescription.getText().toString());
+        intent.putExtra("itemIsbn", tvIsbn.getText().toString());
+        intent.putExtra("itemCondition", tvCondition.getText().toString());
         setResult(RESULT_OK, intent);
         finish();
     }
-    private void  onImageClick() {
+
+    //zoom image
+    private void onImageClick() {
 
         System.out.println("image clicked");
     }
+    //change/delete image
     private void onImageLongClick() {
 
         System.out.println("image long clicked");
+
     }
 
 }

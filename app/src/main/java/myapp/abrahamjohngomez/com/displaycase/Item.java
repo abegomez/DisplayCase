@@ -33,6 +33,14 @@ public class Item {
         this.purchased = purchased;
         this.condition = condition;
     }
+    public Item(String name, String isbn, String description, String image, String purchased, String condition) {
+        this.name = name;
+        this.isbn = isbn;
+        this.description = description;
+        this.image = image;
+        this.purchased = purchased;
+        this.condition = condition;
+    }
 
     public String getImage() {
         return image;

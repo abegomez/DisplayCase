@@ -5,7 +5,10 @@ import android.os.Bundle;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 
+import java.io.Console;
 import java.util.List;
 
 /**
@@ -17,7 +20,6 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
     private List<Fragment> fragments;
 
     public CollectionPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
-
         super(fm);
         this.fragments = fragments;
     }
@@ -25,6 +27,12 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
     @Override
     public Fragment getItem(int position) {
         return this.fragments.get(position);
+    }
+
+    @Override
+    public int getItemPosition(Object object) {
+        System.out.println("reloading object");
+        return POSITION_NONE;
     }
 
     @Override

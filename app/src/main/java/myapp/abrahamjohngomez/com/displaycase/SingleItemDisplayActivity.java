@@ -15,36 +15,25 @@ import java.util.Date;
 import java.util.List;
 
 import db.DbHandler;
-
+//TODO: Image zoom/edit/delete image
 public class SingleItemDisplayActivity extends FragmentActivity {
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
+    List<Item> items = new ArrayList<>();
     private static final int ADD_ITEM_RESULT_CODE = 17;
 
-    public static int count = 10;
+    public static int count = 22;
 
-//    private List<Fragment> getFragments() {
-//        Item newItem = new Item();
-//        //String name, String isbn, int id, String description, String image, Date purchased, String condition
-//        newItem.setName("Another Item");
-//        newItem.setDescription("Here is a different item.");
-//        newItem.setId(344442);
-//        newItem.setIsbn("2342345");
-//        List<Fragment> fList = new ArrayList<Fragment>();
-//        fList.add(ArrayListFragment.newInstance(newItem));
-//        return fList;
-//    }
     private List<Fragment> getFragmentsFromDb() {
         List<Fragment> fList = new ArrayList<Fragment>();
         DbHandler db = new DbHandler(this);
         Log.d("Reading: ", "Reading all items..");
-        List<Item> items = db.getAllItems();
+        items = db.getAllItems();
 
         for(Item it : items) {
-            fList.add(
-                    ArrayListFragment.newInstance(it.getName(), it.getIsbn(), it.getId(),it.getDescription()
-                    , it.getImage(), it.getPurchased(), it.getCondition()
-                    ));
+            fList.add(ArrayListFragment.newInstance(it.getName(),
+                    it.getIsbn(), it.getId(),it.getDescription(),
+                    it.getImage(), it.getPurchased(), it.getCondition()));
         }
         return fList;
     }
@@ -54,31 +43,9 @@ public class SingleItemDisplayActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_item_display);
 
-
-
-
-
-        //test db
-        Item item = new Item("test name", "isbn number", 4, "item description", "image src", DateFormat.getDateTimeInstance().format(new Date()), "condition");
-
-        DbHandler db = new DbHandler(this);
-        Log.d("Insert: ", "Inserting ..");
-        db.insertItem(item);
-
-        //print db
-        Log.d("Reading: ", "Reading all items..");
-        List<Item> items = db.getAllItems();
-
-        for(Item it : items) {
-            String log = "ID: " + it.getId() + ", Name: " + it.getName() + ", Description: " + it.getDescription()
-                    + ", ISBN: " + it.getIsbn() + ", Image src: " + it.getImage() + ", Purchased: " + it.getPurchased()
-                    + ", Condition: " + it.getCondition();
-
-            //Writing items to log
-            Log.d("Item: : ", log);
-
-        }
-
+        updateFragments();
+    }
+    private void updateFragments() {
         List<Fragment> fragments = getFragmentsFromDb();
         mCollectionPagerAdapter = new CollectionPagerAdapter(
                 getSupportFragmentManager(), fragments);
@@ -91,20 +58,27 @@ public class SingleItemDisplayActivity extends FragmentActivity {
     public void btScanNew(View v) {
         Intent intent = new Intent(this, AddNewItemActivity.class);
         startActivityForResult(intent, ADD_ITEM_RESULT_CODE);
-
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        DbHandler db = new DbHandler(this);
 
         if (resultCode == RESULT_OK) {
-            System.out.println("back with results");
+            //
+            Item item = new Item(data.getStringExtra("itemName"), data.getStringExtra("itemIsbn"),
+                    data.getStringExtra("itemDescription"), data.getStringExtra("itemImageSrc"),
+                    data.getStringExtra("itemPurchased"),
+                    data.getStringExtra("itemCondition"));
+            db.insertItem(item);
+            updateFragments();
+            mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
         } else {
             System.out.println(resultCode);
         }
-    }
 
+    }
 }
 
 

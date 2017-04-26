@@ -79,7 +79,7 @@ public class DbHandler extends SQLiteOpenHelper {
         values.put(KEY_DESCRIPTION, item.getDescription());
         values.put(KEY_ISBN, item.getIsbn());
         values.put(KEY_IMAGE, item.getImage());
-        values.put(KEY_PURCHASE_DATE, item.getPurchased().toString());
+        values.put(KEY_PURCHASE_DATE, item.getPurchased());
         values.put(KEY_CONDITION, item.getCondition());
 
         //insert row
