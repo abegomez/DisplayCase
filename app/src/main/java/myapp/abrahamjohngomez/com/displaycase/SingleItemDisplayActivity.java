@@ -2,13 +2,17 @@ package myapp.abrahamjohngomez.com.displaycase;
 
 import android.content.Intent;
 import android.support.v4.app.Fragment;
-
+import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
-
+import android.view.Menu;
+import android.view.MenuItem;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,12 +20,12 @@ import java.util.List;
 
 import db.DbHandler;
 //TODO: Image zoom/edit/delete image
-public class SingleItemDisplayActivity extends FragmentActivity {
+public class SingleItemDisplayActivity extends AppCompatActivity{
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
     List<Item> items = new ArrayList<>();
     private static final int ADD_ITEM_RESULT_CODE = 17;
-
+    private Toolbar toolbar;
     public static int count = 22;
 
     private List<Fragment> getFragmentsFromDb() {
@@ -78,6 +82,22 @@ public class SingleItemDisplayActivity extends FragmentActivity {
             System.out.println(resultCode);
         }
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch(item.getItemId()){
+            case R.id.menuCardView:
+                Intent newIntent = new Intent(this, CardViewActivity.class);
+                startActivity(newIntent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }
 

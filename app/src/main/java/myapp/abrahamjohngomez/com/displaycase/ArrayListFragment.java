@@ -50,6 +50,7 @@ public class ArrayListFragment extends Fragment {
     protected String purchased;
     protected String condition;
      */
+
     static ArrayListFragment newInstance(Item item) {
         ArrayListFragment f = new ArrayListFragment();
         Bundle args = new Bundle();
