@@ -19,7 +19,6 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
     private TextView tvFormatTxt, tvContentTxt, tvItemName, tvItemDescription, tvIsbn, tvCondition;
     private ImageButton btZoomOrAddImage;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,6 +48,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
                 return true;
             }
         });
+
         tvFormatTxt = (TextView) findViewById(R.id.tvScan_format);
         tvContentTxt = (TextView) findViewById(R.id.tvScan_content);
         tvItemName = (TextView) findViewById(R.id.tvAddItemName);
@@ -90,14 +90,10 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
 
     //zoom image
     private void onImageClick() {
-
         System.out.println("image clicked");
     }
     //change/delete image
     private void onImageLongClick() {
-
         System.out.println("image long clicked");
-
     }
-
 }

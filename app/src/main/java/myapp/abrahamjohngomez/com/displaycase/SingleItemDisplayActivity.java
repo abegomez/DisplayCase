@@ -41,12 +41,10 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         }
         return fList;
     }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_item_display);
-
         updateFragments();
     }
     private void updateFragments() {
@@ -55,7 +53,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                 getSupportFragmentManager(), fragments);
 
         mViewPager = (ViewPager) findViewById(R.id.pagersingleitem);
-
         mViewPager.setAdapter(mCollectionPagerAdapter);
     }
 

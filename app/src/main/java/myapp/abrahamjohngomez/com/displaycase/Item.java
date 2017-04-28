@@ -9,7 +9,6 @@ import java.util.Date;
  */
 
 public class Item {
-
     protected String name;
     protected String isbn;
     protected int id;
@@ -17,13 +16,9 @@ public class Item {
     protected String image;
     protected String purchased;
     protected String condition;
-
-
     protected String collection;
 
-    public  Item() {
-
-    }
+    public  Item() {}
     public Item(String name, String isbn, int id, String description, String image, String purchased, String condition) {
         this.name = name;
         this.isbn = isbn;

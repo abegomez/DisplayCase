@@ -33,7 +33,7 @@ public class DbHandler extends SQLiteOpenHelper {
     private static final String KEY_PURCHASE_DATE = "purchase_date";
     private static final String KEY_CONDITION = "condition";
 
-    /*
+    /*ql
     Item data
     protected String name;
     protected String isbn;
@@ -96,7 +96,7 @@ public class DbHandler extends SQLiteOpenHelper {
 
     public Integer deleteContact(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete("contacts", "id = ? ", new String[] {Integer.toString(id)});
+        return db.delete(TABLE_ITEMS, "id = ? ", new String[] {Integer.toString(id)});
     }
 
     public List<Item> getAllItems() {

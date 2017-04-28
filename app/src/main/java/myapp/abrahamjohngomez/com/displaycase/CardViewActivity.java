@@ -15,6 +15,7 @@ public class CardViewActivity extends AppCompatActivity {
     private List<Item> items = new ArrayList<>();
     private RecyclerView recyclerView;
     private CardAdapter cardAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,7 +32,6 @@ public class CardViewActivity extends AppCompatActivity {
     }
 
     private void prepareItemData() {
-
         cardAdapter.notifyDataSetChanged();
     }
 }

@@ -50,7 +50,6 @@ public class ArrayListFragment extends Fragment {
     protected String purchased;
     protected String condition;
      */
-
     static ArrayListFragment newInstance(Item item) {
         ArrayListFragment f = new ArrayListFragment();
         Bundle args = new Bundle();
@@ -65,14 +64,12 @@ public class ArrayListFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
-
     //retreive this instance's number from its arguments
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNum = getArguments() != null ? getArguments().getInt("num") : 1;
     }
-
     //fragment ui
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

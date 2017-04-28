@@ -23,23 +23,19 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.fragments = fragments;
     }
-
     @Override
     public Fragment getItem(int position) {
         return this.fragments.get(position);
     }
-
     @Override
     public int getItemPosition(Object object) {
         System.out.println("reloading object");
         return POSITION_NONE;
     }
-
     @Override
     public int getCount() {
         return this.fragments.size();
     }
-
     @Override
     public CharSequence getPageTitle(int position) {
         return "OBJECT " + (position + 1);

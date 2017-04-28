@@ -14,8 +14,6 @@ import android.view.LayoutInflater;
 
 import java.util.ArrayList;
 import java.util.List;
-//import myapp.abrahamjohngomez.com.displaycase.R;
-
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> {
 
@@ -34,10 +32,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             itemDescription = (TextView) view.findViewById(R.id.tvCardItemDescription);
         }
     }
-    public CardAdapter(List<Item> itemsList) {
-        this.items = itemsList;
-
-    }
+    public CardAdapter(List<Item> itemsList) { this.items = itemsList; }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -52,7 +47,5 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         holder.itemDescription.setText(item.getDescription());
     }
     @Override
-    public int getItemCount() {
-        return items.size();
-    }
+    public int getItemCount() { return items.size(); }
 }
