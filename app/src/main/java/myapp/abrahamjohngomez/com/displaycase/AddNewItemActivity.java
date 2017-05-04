@@ -3,6 +3,7 @@ package myapp.abrahamjohngomez.com.displaycase;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -18,11 +19,14 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
     private Button btScan, btAddItem;
     private TextView tvFormatTxt, tvContentTxt, tvItemName, tvItemDescription, tvIsbn, tvCondition;
     private ImageButton btZoomOrAddImage;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_scan);
+        toolbar = (Toolbar) findViewById(R.id.toolbar_add_item);
+        toolbar.setTitle("Add Item");
+        setSupportActionBar(toolbar);
         setResult(RESULT_CANCELED);
         btScan = (Button) findViewById(R.id.btScan);
         btScan.setOnClickListener(this);

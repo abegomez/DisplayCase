@@ -17,6 +17,7 @@ import android.widget.TextView;
 public class ArrayListFragment extends Fragment {
     int mNum;
 
+    private int id;
     //create a new isntance of Counting frag, providing num as an argument
     static ArrayListFragment newInstance(int num) {
         ArrayListFragment f = new ArrayListFragment();
@@ -89,8 +90,10 @@ public class ArrayListFragment extends Fragment {
         ((TextView)tvPurchased).setText("Purchased:" + args.getString("itemPurchased"));
         ((TextView)tvCondition).setText("Condition:" + args.getString("itemCondition"));
 
+        id = args.getInt("itemId");
         return v;
     }
+
 
 //    @Override
 //    public void onActivityCreated(Bundle savedInstanceState) {

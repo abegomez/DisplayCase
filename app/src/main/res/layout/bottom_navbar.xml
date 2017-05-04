@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="?attr/colorPrimary"
+    app:contentInsetStart="0dp"
+    app:itemIconTint="@color/White"
+    app:itemTextColor="@color/White"
+    app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+    <RelativeLayout
+        android:id="@+id/bnButtons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/action_add"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_centerVertical="false"
+            android:background="@android:drawable/ic_menu_add"
+            android:enabled="true"
+            android:icon="@android:drawable/ic_menu_add"
+            android:title="@string/navbar_add"
+            app:showAsAction="always" />
+
+        <Button
+            android:id="@+id/action_edit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@android:drawable/ic_menu_edit"
+            android:enabled="true"
+            android:icon="@android:drawable/ic_menu_edit"
+            android:title="@string/navbar_edit"
+            app:showAsAction="always" />
+
+        <Button
+            android:id="@+id/action_delete"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_toRightOf="@+id/action_edit"
+            android:background="@android:drawable/ic_menu_delete"
+            android:enabled="true"
+            android:icon="@android:drawable/ic_menu_delete"
+            android:title="@string/navbar_delete"
+            app:showAsAction="always" />
+
+        <Button
+            android:id="@+id/action_favorite"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentRight="false"
+            android:layout_toRightOf="@+id/action_delete"
+            android:background="@android:drawable/btn_star_big_off"
+            android:checkable="true"
+            android:enabled="true"
+            android:icon="@android:drawable/btn_star"
+            android:title="@string/navbar_favorite"
+            app:showAsAction="always" />
+
+
+    </RelativeLayout>
+</android.support.v7.widget.Toolbar>

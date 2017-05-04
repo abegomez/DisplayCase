@@ -23,14 +23,22 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
         super(fm);
         this.fragments = fragments;
     }
+    public void updateData(List<Fragment> data) {
+        fragments = data;
+        this.notifyDataSetChanged();
+    }
     @Override
     public Fragment getItem(int position) {
         return this.fragments.get(position);
     }
+
     @Override
     public int getItemPosition(Object object) {
-        System.out.println("reloading object");
-        return POSITION_NONE;
+        int index = fragments.indexOf(object);
+        if(index == -1)
+            return PagerAdapter.POSITION_NONE;
+        else
+            return index;
     }
     @Override
     public int getCount() {

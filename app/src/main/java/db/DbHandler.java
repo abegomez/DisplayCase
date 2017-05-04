@@ -90,13 +90,20 @@ public class DbHandler extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateItem() {
-        return true;
-    }
-
-    public Integer deleteContact(Integer id) {
+    public Integer deleteItem(Integer id) {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_ITEMS, "id = ? ", new String[] {Integer.toString(id)});
+    }
+    private Integer updateItem(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(KEY_NAME, item.getName());
+        values.put(KEY_DESCRIPTION, item.getDescription());
+        values.put(KEY_ISBN, item.getIsbn());
+        values.put(KEY_IMAGE, item.getImage());
+        values.put(KEY_PURCHASE_DATE, item.getPurchased());
+        values.put(KEY_CONDITION, item.getCondition());
+        return db.update(TABLE_ITEMS, values,KEY_ID + " = ?", new String[]{String.valueOf(Integer.valueOf(item.getId()))});
     }
 
     public List<Item> getAllItems() {
@@ -119,6 +126,30 @@ public class DbHandler extends SQLiteOpenHelper {
             itemArrayList.add(item);
             res.moveToNext();
         }
+        db.close();
         return itemArrayList;
+    }
+
+    public Item getSingleItem(String id) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        Cursor res = null;
+        Item item = new Item();
+
+        try {
+            res = db.rawQuery("SELECT KEY_ID FROM TABLE_ITEMS WHERE KEY_ID=?", new String[] {id + ""});
+            if (res.getCount() > 0) {
+                res.moveToFirst();
+                item.setName(res.getString(res.getColumnIndex("KEY_NAME")));
+                item.setDescription(res.getString(res.getColumnIndex("KEY_DESCRIPTION")));
+                item.setIsbn(res.getString(res.getColumnIndex("KEY_ISBN")));
+                item.setImage(res.getString(res.getColumnIndex("KEY_IMAGE")));
+                item.setPurchased(res.getString(res.getColumnIndex("KEY_PURCHASE_DATE")));
+                item.setCondition(res.getString(res.getColumnIndex("KEY_CONDITION")));
+            }
+            return item;
+        } finally {
+            db.close();
+            res.close();
+        }
     }
 }

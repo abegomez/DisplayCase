@@ -9,4 +9,8 @@
     <string name="scan">Scan</string>
     <string name="description_zoom_touch_close"></string>
 
+    <string name="navbar_edit"></string>
+    <string name="navbar_add"></string>
+    <string name="navbar_delete"></string>
+    <string name="navbar_favorite"></string>
 </resources>
