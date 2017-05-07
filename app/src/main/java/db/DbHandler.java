@@ -103,7 +103,7 @@ public class DbHandler extends SQLiteOpenHelper {
         values.put(KEY_IMAGE, item.getImage());
         values.put(KEY_PURCHASE_DATE, item.getPurchased());
         values.put(KEY_CONDITION, item.getCondition());
-        return db.update(TABLE_ITEMS, values,KEY_ID + " = ?", new String[]{String.valueOf(Integer.valueOf(item.getId()))});
+        return db.update(TABLE_ITEMS, values, KEY_ID + " = ?", new String[]{String.valueOf(item.getId())});
     }
 
     public List<Item> getAllItems() {
@@ -130,15 +130,18 @@ public class DbHandler extends SQLiteOpenHelper {
         return itemArrayList;
     }
 
-    public Item getSingleItem(String id) {
+    public Item getSingleItem(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = null;
-        Item item = new Item();
+        Item item = null;
+        String sql = "SELECT * FROM " +TABLE_ITEMS + " WHERE id = " + id;
 
         try {
-            res = db.rawQuery("SELECT KEY_ID FROM TABLE_ITEMS WHERE KEY_ID=?", new String[] {id + ""});
+            res = db.rawQuery(sql, null);
             if (res.getCount() > 0) {
                 res.moveToFirst();
+                item = new Item();
+                item.setId(id);
                 item.setName(res.getString(res.getColumnIndex("KEY_NAME")));
                 item.setDescription(res.getString(res.getColumnIndex("KEY_DESCRIPTION")));
                 item.setIsbn(res.getString(res.getColumnIndex("KEY_ISBN")));

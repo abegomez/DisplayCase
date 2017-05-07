@@ -1,10 +1,12 @@
 package myapp.abrahamjohngomez.com.displaycase;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.app.Fragment;
 import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
@@ -14,7 +16,9 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import java.io.Console;
 import java.lang.reflect.Array;
@@ -53,9 +57,9 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_single_item_display);
-
-        setupToolbars();
         updateFragments();
+        setupToolbars();
+
     }
 
     private void setupToolbars() {
@@ -80,6 +84,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                             deleteFragment();
                             break;
                         case R.id.action_edit:
+                            Log.d("testing edit", "testing the edit button");
                             //edit item
                             break;
                         case R.id.action_favorite:
@@ -94,14 +99,29 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     }
 
     private void deleteFragment() {
-        //TODO: add delete warning
-        DbHandler db = new DbHandler(this);
-        ArrayListFragment frag = getCurrentFragment();
-        int fragId = getFragId(frag);
-        db.deleteItem(fragId);
-        db.close();
-        Log.d("Deleting", "Deleting " + frag.getArguments().getString("itemName"));
-        updateFragments();
+        final DbHandler db = new DbHandler(this);
+        final ArrayListFragment frag = getCurrentFragment();
+
+        if(frag != null) {
+            final int fragId = getFragId(frag);
+
+            new AlertDialog.Builder(this)
+                    .setTitle(frag.getArguments().getString("itemName"))
+                    .setMessage("Delete?")
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+
+                            db.deleteItem(fragId);
+                            db.close();
+                            Log.d("Deleting", "Deleting " + frag.getArguments().getString("itemName"));
+                            updateFragments();
+                            Toast.makeText(SingleItemDisplayActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+                        }
+                    })
+                    .setNegativeButton(android.R.string.no, null).show();
+        }
     }
 
     private void updateFragments() {
@@ -138,7 +158,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
             updateFragments();
             mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
         } else {
-            System.out.println(resultCode);
+            Log.d("return", "return with code: " + resultCode);
         }
 
     }
@@ -159,9 +179,13 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         }
     }
     public ArrayListFragment getCurrentFragment() {
-        int currentPage = mViewPager.getCurrentItem();
-        ArrayListFragment aFrag = (ArrayListFragment) mCollectionPagerAdapter.getItem(currentPage);
-        return aFrag;
+        if(mViewPager.getChildCount() >0) {
+            int currentPage = mViewPager.getCurrentItem();
+            ArrayListFragment aFrag = (ArrayListFragment) mCollectionPagerAdapter.getItem(currentPage);
+            return aFrag;
+        } else {
+            return null;
+        }
     }
 
     public int getFragId(ArrayListFragment aFrag) {

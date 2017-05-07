@@ -27,12 +27,14 @@
             android:layout_centerVertical="false"
             android:background="@android:drawable/ic_menu_add"
             android:enabled="true"
+            android:visibility="visible"
             android:icon="@android:drawable/ic_menu_add"
             android:title="@string/navbar_add"
             app:showAsAction="always" />
 
         <Button
             android:id="@+id/action_edit"
+            android:visibility="visible"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:background="@android:drawable/ic_menu_edit"
@@ -43,6 +45,7 @@
 
         <Button
             android:id="@+id/action_delete"
+            android:visibility="visible"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_toRightOf="@+id/action_edit"
@@ -54,6 +57,7 @@
 
         <Button
             android:id="@+id/action_favorite"
+            android:visibility="visible"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentRight="false"
