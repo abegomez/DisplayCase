@@ -94,7 +94,7 @@ public class DbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         return db.delete(TABLE_ITEMS, "id = ? ", new String[] {Integer.toString(id)});
     }
-    private Integer updateItem(Item item) {
+    public Integer updateItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put(KEY_NAME, item.getName());
@@ -134,20 +134,19 @@ public class DbHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = null;
         Item item = null;
-        String sql = "SELECT * FROM " +TABLE_ITEMS + " WHERE id = " + id;
+        String sql = "SELECT * FROM " + TABLE_ITEMS + " WHERE id = " + id;
 
         try {
             res = db.rawQuery(sql, null);
-            if (res.getCount() > 0) {
-                res.moveToFirst();
+            if (res.moveToFirst()) {
                 item = new Item();
                 item.setId(id);
-                item.setName(res.getString(res.getColumnIndex("KEY_NAME")));
-                item.setDescription(res.getString(res.getColumnIndex("KEY_DESCRIPTION")));
-                item.setIsbn(res.getString(res.getColumnIndex("KEY_ISBN")));
-                item.setImage(res.getString(res.getColumnIndex("KEY_IMAGE")));
-                item.setPurchased(res.getString(res.getColumnIndex("KEY_PURCHASE_DATE")));
-                item.setCondition(res.getString(res.getColumnIndex("KEY_CONDITION")));
+                item.setName(res.getString(res.getColumnIndex(KEY_NAME)));
+                item.setDescription(res.getString(res.getColumnIndex(KEY_DESCRIPTION)));
+                item.setIsbn(res.getString(res.getColumnIndex(KEY_ISBN)));
+                item.setImage(res.getString(res.getColumnIndex(KEY_IMAGE)));
+                item.setPurchased(res.getString(res.getColumnIndex(KEY_PURCHASE_DATE)));
+                item.setCondition(res.getString(res.getColumnIndex(KEY_CONDITION)));
             }
             return item;
         } finally {

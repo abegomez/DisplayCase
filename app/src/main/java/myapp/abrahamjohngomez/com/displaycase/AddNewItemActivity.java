@@ -20,12 +20,14 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
     private TextView tvFormatTxt, tvContentTxt, tvItemName, tvItemDescription, tvIsbn, tvCondition;
     private ImageButton btZoomOrAddImage;
     private Toolbar toolbar;
+    protected Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        intent = getIntent();
         setContentView(R.layout.activity_add_item_scan);
         toolbar = (Toolbar) findViewById(R.id.toolbar_add_item);
-        toolbar.setTitle("Add Item");
+        toolbar.setTitle(intent.getStringExtra("title"));
         setSupportActionBar(toolbar);
         setResult(RESULT_CANCELED);
         btScan = (Button) findViewById(R.id.btScan);
@@ -37,6 +39,8 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
                 onAddItemClick();
             }
         });
+        btAddItem.setText(intent.getStringExtra("buttonText"));
+
 
         btZoomOrAddImage = (ImageButton) findViewById(R.id.ibZoomOrAddImage);
         btZoomOrAddImage.setOnClickListener(new View.OnClickListener() {

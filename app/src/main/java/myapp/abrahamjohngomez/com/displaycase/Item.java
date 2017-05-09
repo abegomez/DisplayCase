@@ -1,14 +1,15 @@
 package myapp.abrahamjohngomez.com.displaycase;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Date;
 
 /**
  * Created by ryuhyoko on 4/17/2017.
  */
-
-public class Item {
+//TODO: finish doing the updateFragment method reusing the additem activity
+public class Item implements Parcelable{
     protected String name;
     protected String isbn;
     protected int id;
@@ -19,6 +20,25 @@ public class Item {
     protected String collection;
 
     public  Item() {}
+    public int describeContents() { return 0;}
+    public void writeToParcel(Parcel out, int flags) {
+        out.writeInt(id);
+    }
+    public static final Parcelable.Creator<Item> CREATOR
+            = new Parcelable.Creator<Item>() {
+        public Item createFromParcel(Parcel in) {
+            return new Item(in);
+        }
+
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
+
+    private Item(Parcel in) {
+
+    }
+
     public Item(String name, String isbn, int id, String description, String image, String purchased, String condition) {
         this.name = name;
         this.isbn = isbn;

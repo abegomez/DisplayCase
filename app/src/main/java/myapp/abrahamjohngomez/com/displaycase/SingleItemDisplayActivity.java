@@ -1,5 +1,6 @@
 package myapp.abrahamjohngomez.com.displaycase;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,6 +13,7 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.View;
 import android.view.Menu;
@@ -35,6 +37,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     List<Item> items = new ArrayList<>();
     List<Fragment> fragments = new ArrayList<>();
     private static final int ADD_ITEM_RESULT_CODE = 17;
+    private static final int UPDATE_ITEM_CODE = 18;
     public static int count = 22;
     private Toolbar toolbar;
     private RelativeLayout bottomToolbar;
@@ -86,6 +89,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                         case R.id.action_edit:
                             Log.d("testing edit", "testing the edit button");
                             //edit item
+                            updateCurrentFragment();
                             break;
                         case R.id.action_favorite:
                             //favorite item
@@ -96,6 +100,30 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                 }
             });
         }
+    }
+
+    private void updateCurrentFragment() {
+        Intent intent = new Intent(this, AddNewItemActivity.class);
+
+        startActivityForResult(intent,UPDATE_ITEM_CODE);
+//        final DbHandler db = new DbHandler(this);
+//        final ArrayListFragment frag = getCurrentFragment();
+//
+//        if(frag != null) {
+//            Log.d("inflating", "inflating the update view");
+//            Item item = db.getSingleItem(getFragId(frag));
+//            LayoutInflater inflater = (LayoutInflater) SingleItemDisplayActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+//            final View formElementsView = inflater.inflate(R.layout.update_item, null, false);
+//
+//            new AlertDialog.Builder(SingleItemDisplayActivity.this).setView(formElementsView).setTitle("Edit item").setPositiveButton("Save Changes",
+//                    new DialogInterface.OnClickListener() {
+//                        public void onClick(DialogInterface dialog, int id) {
+//
+//                            dialog.cancel();
+//                        }
+//                    }).show();
+//
+//        }
     }
 
     private void deleteFragment() {
@@ -139,6 +167,8 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
 
     public void btScanNew() {
         Intent intent = new Intent(this, AddNewItemActivity.class);
+        intent.putExtra("title", "Add Item");
+        intent.putExtra("buttonText", "Add Item");
         startActivityForResult(intent, ADD_ITEM_RESULT_CODE);
     }
 
@@ -153,12 +183,15 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                     data.getStringExtra("itemDescription"), data.getStringExtra("itemImageSrc"),
                     data.getStringExtra("itemPurchased"),
                     data.getStringExtra("itemCondition"));
-            db.insertItem(item);
+            if(requestCode == ADD_ITEM_RESULT_CODE) { db.insertItem(item); }
+            else if(requestCode == UPDATE_ITEM_CODE) { db.updateItem(item); }
+            
             db.close();
             updateFragments();
             mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
         } else {
             Log.d("return", "return with code: " + resultCode);
+            Log.d("request", "request code: " + requestCode);
         }
 
     }
