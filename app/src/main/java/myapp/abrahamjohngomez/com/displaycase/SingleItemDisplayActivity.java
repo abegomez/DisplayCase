@@ -42,17 +42,17 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     private Toolbar toolbar;
     private RelativeLayout bottomToolbar;
     private Item item;
-
+    private final DbHandler db = new DbHandler(this);
     private List<Fragment> getFragmentsFromDb() {
         List<Fragment> fList = new ArrayList<Fragment>();
-        DbHandler db = new DbHandler(this);
+
         Log.d("Reading: ", "Reading all items..");
         items = db.getAllItems();
 
         for(Item it : items) {
             fList.add(ArrayListFragment.newInstance(it.getName(),
-                    it.getIsbn(), it.getId(),it.getDescription(),
-                    it.getImage(), it.getPurchased(), it.getCondition()));
+                it.getIsbn(), it.getId(),it.getDescription(),
+                it.getImage(), it.getPurchased(), it.getCondition()));
         }
         return fList;
     }
@@ -73,29 +73,28 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
 
         for(int i = 0; i < bottomToolbar.getChildCount(); i++) {
             View child = bottomToolbar.getChildAt(i);
-
             child.setOnClickListener(new RelativeLayout.OnClickListener() {
                 @Override
                 public void onClick(View item) {
-                    int id = item.getId();
-                    switch (id) {
-                        case R.id.action_add:
-                            btScanNew();
-                            break;
-                        case R.id.action_delete:
-                            //delete item
-                            deleteFragment();
-                            break;
-                        case R.id.action_edit:
-                            //edit item
-                            updateCurrentFragment();
-                            break;
-                        case R.id.action_favorite:
-                            //favorite item
-                            break;
-                        default:
-                            break;
-                    }
+                int id = item.getId();
+                switch (id) {
+                    case R.id.action_add:
+                        btScanNew();
+                        break;
+                    case R.id.action_delete:
+                        //delete item
+                        deleteFragment();
+                        break;
+                    case R.id.action_edit:
+                        //edit item
+                        updateCurrentFragment();
+                        break;
+                    case R.id.action_favorite:
+                        //favorite item
+                        break;
+                    default:
+                        break;
+                }
                 }
             });
         }
@@ -103,7 +102,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
 
     private void updateCurrentFragment() {
         Intent intent = new Intent(this, AddNewItemActivity.class);
-        final DbHandler db = new DbHandler(this);
         try {
             Item item = db.getSingleItem(getFragId(getCurrentFragment()));
             System.out.println(item.getName());
@@ -118,9 +116,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     }
 
     private void deleteFragment() {
-        final DbHandler db = new DbHandler(this);
         final ArrayListFragment frag = getCurrentFragment();
-
         if(frag != null) {
             final int fragId = getFragId(frag);
 
@@ -164,8 +160,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        DbHandler db = new DbHandler(this);
-
         if (resultCode == RESULT_OK) {
             item = data.getParcelableExtra("item");
             if(requestCode == ADD_ITEM_RESULT_CODE) {
@@ -177,7 +171,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
             Log.d("return", "return with code: " + resultCode);
             Log.d("request", "request code: " + requestCode);
         }
-        db.close();
+        //db.close();
         updateFragments();
         mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
 
