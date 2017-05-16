@@ -63,7 +63,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         setContentView(R.layout.activity_single_item_display);
         updateFragments();
         setupToolbars();
-
     }
 
     private void setupToolbars() {
