@@ -36,11 +36,12 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     ViewPager mViewPager;
     List<Item> items = new ArrayList<>();
     List<Fragment> fragments = new ArrayList<>();
-    private static final int ADD_ITEM_RESULT_CODE = 17;
-    private static final int UPDATE_ITEM_CODE = 18;
+    public static final int ADD_ITEM_RESULT_CODE = 17;
+    public static final int UPDATE_ITEM_CODE = 18;
     public static int count = 22;
     private Toolbar toolbar;
     private RelativeLayout bottomToolbar;
+    private Item item;
 
     private List<Fragment> getFragmentsFromDb() {
         List<Fragment> fList = new ArrayList<Fragment>();
@@ -79,7 +80,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                     int id = item.getId();
                     switch (id) {
                         case R.id.action_add:
-                            Log.d("hello", "testing the add button");
                             btScanNew();
                             break;
                         case R.id.action_delete:
@@ -87,7 +87,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                             deleteFragment();
                             break;
                         case R.id.action_edit:
-                            Log.d("testing edit", "testing the edit button");
                             //edit item
                             updateCurrentFragment();
                             break;
@@ -104,26 +103,18 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
 
     private void updateCurrentFragment() {
         Intent intent = new Intent(this, AddNewItemActivity.class);
-
-        startActivityForResult(intent,UPDATE_ITEM_CODE);
-//        final DbHandler db = new DbHandler(this);
-//        final ArrayListFragment frag = getCurrentFragment();
-//
-//        if(frag != null) {
-//            Log.d("inflating", "inflating the update view");
-//            Item item = db.getSingleItem(getFragId(frag));
-//            LayoutInflater inflater = (LayoutInflater) SingleItemDisplayActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//            final View formElementsView = inflater.inflate(R.layout.update_item, null, false);
-//
-//            new AlertDialog.Builder(SingleItemDisplayActivity.this).setView(formElementsView).setTitle("Edit item").setPositiveButton("Save Changes",
-//                    new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int id) {
-//
-//                            dialog.cancel();
-//                        }
-//                    }).show();
-//
-//        }
+        final DbHandler db = new DbHandler(this);
+        try {
+            Item item = db.getSingleItem(getFragId(getCurrentFragment()));
+            System.out.println(item.getName());
+            if (item != null) {
+                intent.putExtra("requestCode", UPDATE_ITEM_CODE);
+                intent.putExtra("title", "Update Item");
+                intent.putExtra("buttonText", "Update");
+                intent.putExtra(AddNewItemActivity.ITEM, item);
+                startActivityForResult(intent, UPDATE_ITEM_CODE);
+            }
+        } catch (Exception e) {}
     }
 
     private void deleteFragment() {
@@ -134,21 +125,19 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
             final int fragId = getFragId(frag);
 
             new AlertDialog.Builder(this)
-                    .setTitle(frag.getArguments().getString("itemName"))
-                    .setMessage("Delete?")
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-
-                            db.deleteItem(fragId);
-                            db.close();
-                            Log.d("Deleting", "Deleting " + frag.getArguments().getString("itemName"));
-                            updateFragments();
-                            Toast.makeText(SingleItemDisplayActivity.this, "Delete", Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, null).show();
+                .setTitle(frag.getArguments().getString("itemName"))
+                .setMessage("Delete?")
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                    db.deleteItem(fragId);
+                    db.close();
+                    Log.d("Deleting", "Deleting " + frag.getArguments().getString("itemName"));
+                    updateFragments();
+                    Toast.makeText(SingleItemDisplayActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+                    }
+                }).setNegativeButton(android.R.string.no, null).show();
         }
     }
 
@@ -178,21 +167,19 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         DbHandler db = new DbHandler(this);
 
         if (resultCode == RESULT_OK) {
-            //
-            Item item = new Item(data.getStringExtra("itemName"), data.getStringExtra("itemIsbn"),
-                    data.getStringExtra("itemDescription"), data.getStringExtra("itemImageSrc"),
-                    data.getStringExtra("itemPurchased"),
-                    data.getStringExtra("itemCondition"));
-            if(requestCode == ADD_ITEM_RESULT_CODE) { db.insertItem(item); }
-            else if(requestCode == UPDATE_ITEM_CODE) { db.updateItem(item); }
-            
-            db.close();
-            updateFragments();
-            mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
+            item = data.getParcelableExtra("item");
+            if(requestCode == ADD_ITEM_RESULT_CODE) {
+                    db.insertItem(item);
+            } else if(requestCode == UPDATE_ITEM_CODE) {
+                item = data.getParcelableExtra("item");
+                System.out.println("update code:" + db.updateItem(item)); }
         } else {
             Log.d("return", "return with code: " + resultCode);
             Log.d("request", "request code: " + requestCode);
         }
+        db.close();
+        updateFragments();
+        mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
 
     }
     @Override

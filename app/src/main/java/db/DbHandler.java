@@ -97,13 +97,15 @@ public class DbHandler extends SQLiteOpenHelper {
     public Integer updateItem(Item item) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        String[] whereArgs = {String.valueOf(item.getId())};
         values.put(KEY_NAME, item.getName());
         values.put(KEY_DESCRIPTION, item.getDescription());
         values.put(KEY_ISBN, item.getIsbn());
         values.put(KEY_IMAGE, item.getImage());
         values.put(KEY_PURCHASE_DATE, item.getPurchased());
         values.put(KEY_CONDITION, item.getCondition());
-        return db.update(TABLE_ITEMS, values, KEY_ID + " = ?", new String[]{String.valueOf(item.getId())});
+        System.out.println("updating: " +item.getName());
+        return db.update(TABLE_ITEMS, values, "id = ?", whereArgs);
     }
 
     public List<Item> getAllItems() {
@@ -130,16 +132,17 @@ public class DbHandler extends SQLiteOpenHelper {
         return itemArrayList;
     }
 
-    public Item getSingleItem(int id) {
+    public Item getSingleItem(int itemId) {
         SQLiteDatabase db = this.getWritableDatabase();
         Cursor res = null;
         Item item = null;
-        String sql = "SELECT * FROM " + TABLE_ITEMS + " WHERE id = " + id;
+        String sql = "SELECT * FROM " + TABLE_ITEMS + " WHERE id = " + itemId;
 
         try {
             res = db.rawQuery(sql, null);
             if (res.moveToFirst()) {
                 item = new Item();
+                int id = Integer.parseInt(res.getString(res.getColumnIndex("id")));
                 item.setId(id);
                 item.setName(res.getString(res.getColumnIndex(KEY_NAME)));
                 item.setDescription(res.getString(res.getColumnIndex(KEY_DESCRIPTION)));

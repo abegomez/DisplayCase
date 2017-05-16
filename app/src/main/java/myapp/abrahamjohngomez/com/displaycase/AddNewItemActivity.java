@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -21,15 +22,19 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
     private ImageButton btZoomOrAddImage;
     private Toolbar toolbar;
     protected Intent intent;
+    public static final String ITEM = "Item";
+    private Item item;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        intent = getIntent();
         setContentView(R.layout.activity_add_item_scan);
+        intent = getIntent();
+
         toolbar = (Toolbar) findViewById(R.id.toolbar_add_item);
         toolbar.setTitle(intent.getStringExtra("title"));
         setSupportActionBar(toolbar);
-        setResult(RESULT_CANCELED);
+
         btScan = (Button) findViewById(R.id.btScan);
         btScan.setOnClickListener(this);
         btAddItem = (Button) findViewById(R.id.btAddNewItem);
@@ -41,6 +46,10 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         });
         btAddItem.setText(intent.getStringExtra("buttonText"));
 
+        tvItemName = (TextView) findViewById(R.id.tvAddItemName);
+        tvItemDescription = (TextView) findViewById(R.id.tvAddItemDescription);
+        tvIsbn = (TextView) findViewById(R.id.tvAddItemIsbn);
+        tvCondition = (TextView) findViewById(R.id.tvAddItemCondition);
 
         btZoomOrAddImage = (ImageButton) findViewById(R.id.ibZoomOrAddImage);
         btZoomOrAddImage.setOnClickListener(new View.OnClickListener() {
@@ -57,12 +66,16 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
-        tvFormatTxt = (TextView) findViewById(R.id.tvScan_format);
-        tvContentTxt = (TextView) findViewById(R.id.tvScan_content);
-        tvItemName = (TextView) findViewById(R.id.tvAddItemName);
-        tvItemDescription = (TextView) findViewById(R.id.tvAddItemDescription);
-        tvIsbn = (TextView) findViewById(R.id.tvAddItemIsbn);
-        tvCondition = (TextView) findViewById(R.id.tvAddItemCondition);
+        if(intent.getIntExtra("requestCode", -1) == SingleItemDisplayActivity.UPDATE_ITEM_CODE) {
+            item = this.getIntent().getParcelableExtra(ITEM);
+            System.out.println("updating:" + item.getId());
+            tvItemName.setText(item.getName());
+            tvItemDescription.setText(item.getDescription());
+            tvIsbn.setText(item.getIsbn());
+            tvCondition.setText(item.getCondition());
+        } else {
+            item = new Item();
+        }
     }
     public void onClick(View v) {
         //responds to button click
@@ -80,18 +93,21 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             String scanContent = scanningResult.getContents();
             String scanFormat = scanningResult.getFormatName();
             tvFormatTxt.setText("Format: " + scanFormat);
-            tvContentTxt.setText("Content: " + scanContent);
+            tvIsbn.setText("Content: " + scanContent);
         } else {
             Toast toast = Toast.makeText(getApplicationContext(),"No scan data received!", Toast.LENGTH_SHORT);
             toast.show();
         }
     }
+
     private void onAddItemClick() {
         Intent intent = new Intent();
-        intent.putExtra("itemName", tvItemName.getText().toString());
-        intent.putExtra("itemDescription", tvItemDescription.getText().toString());
-        intent.putExtra("itemIsbn", tvIsbn.getText().toString());
-        intent.putExtra("itemCondition", tvCondition.getText().toString());
+        item.setName(tvItemName.getText().toString());
+        item.setDescription(tvItemDescription.getText().toString());
+        item.setIsbn(tvIsbn.getText().toString());
+        //item.setPurchased(tvItemDescription.getText().toString());
+        item.setCondition(tvCondition.getText().toString());
+        intent.putExtra("item", item);
         setResult(RESULT_OK, intent);
         finish();
     }

@@ -20,24 +20,6 @@ public class Item implements Parcelable{
     protected String collection;
 
     public  Item() {}
-    public int describeContents() { return 0;}
-    public void writeToParcel(Parcel out, int flags) {
-        out.writeInt(id);
-    }
-    public static final Parcelable.Creator<Item> CREATOR
-            = new Parcelable.Creator<Item>() {
-        public Item createFromParcel(Parcel in) {
-            return new Item(in);
-        }
-
-        public Item[] newArray(int size) {
-            return new Item[size];
-        }
-    };
-
-    private Item(Parcel in) {
-
-    }
 
     public Item(String name, String isbn, int id, String description, String image, String purchased, String condition) {
         this.name = name;
@@ -116,4 +98,44 @@ public class Item implements Parcelable{
     public String getCollection() { return collection; }
 
     public void setCollection(String collection) { this.collection = collection; }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.name);
+        dest.writeString(this.isbn);
+        dest.writeInt(this.id);
+        dest.writeString(this.description);
+        dest.writeString(this.image);
+        dest.writeString(this.purchased);
+        dest.writeString(this.condition);
+        dest.writeString(this.collection);
+    }
+
+    protected Item(Parcel in) {
+        this.name = in.readString();
+        this.isbn = in.readString();
+        this.id = in.readInt();
+        this.description = in.readString();
+        this.image = in.readString();
+        this.purchased = in.readString();
+        this.condition = in.readString();
+        this.collection = in.readString();
+    }
+
+    public static final Creator<Item> CREATOR = new Creator<Item>() {
+        @Override
+        public Item createFromParcel(Parcel source) {
+            return new Item(source);
+        }
+
+        @Override
+        public Item[] newArray(int size) {
+            return new Item[size];
+        }
+    };
 }
