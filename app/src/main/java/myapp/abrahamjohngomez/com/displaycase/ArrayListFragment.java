@@ -1,5 +1,8 @@
 package myapp.abrahamjohngomez.com.displaycase;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -8,7 +11,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * Created by ryuhyoko on 4/18/2017.
@@ -17,7 +24,7 @@ import android.widget.TextView;
 public class ArrayListFragment extends Fragment {
     int mNum;
 
-    private int id;
+
     //create a new isntance of Counting frag, providing num as an argument
     static ArrayListFragment newInstance(int num) {
         ArrayListFragment f = new ArrayListFragment();
@@ -90,7 +97,21 @@ public class ArrayListFragment extends Fragment {
         ((TextView)tvPurchased).setText("Purchased:" + args.getString("itemPurchased"));
         ((TextView)tvCondition).setText("Condition:" + args.getString("itemCondition"));
 
-        id = args.getInt("itemId");
+        try {
+            boolean validUri= args.getString("itemImageSrc")!= null;
+            if(validUri) {
+                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                InputStream input = getActivity().getContentResolver()
+                        .openInputStream(Uri.parse(args.getString("itemImageSrc")));
+                Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+                input.close();
+                ((ImageView) ivImage).setImageBitmap(bitmap);
+            }
+        }catch (IOException e ) {
+            e.printStackTrace();
+        } catch (NullPointerException e1) {
+            e1.printStackTrace();
+        }
         return v;
     }
 
