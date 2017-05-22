@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.os.PersistableBundle;
 import android.support.v4.app.Fragment;
 import android.app.ActionBar;
 import android.support.v4.app.FragmentActivity;
@@ -43,6 +44,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     private RelativeLayout bottomToolbar;
     private Item item;
     private final DbHandler db = new DbHandler(this);
+
     private List<Fragment> getFragmentsFromDb() {
         List<Fragment> fList = new ArrayList<Fragment>();
 
@@ -63,6 +65,21 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         setContentView(R.layout.activity_single_item_display);
         updateFragments();
         setupToolbars();
+        if(savedInstanceState != null) {
+            mViewPager.setCurrentItem(savedInstanceState.getInt("currentPage"));
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
+        super.onSaveInstanceState(outState, outPersistentState);
+        outState.putInt("currentPage", mViewPager.getCurrentItem());
     }
 
     private void setupToolbars() {
@@ -162,17 +179,21 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         if (resultCode == RESULT_OK) {
             item = data.getParcelableExtra("item");
             if(requestCode == ADD_ITEM_RESULT_CODE) {
-                    db.insertItem(item);
+                db.insertItem(item);
+                updateFragments();
+                mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
             } else if(requestCode == UPDATE_ITEM_CODE) {
                 item = data.getParcelableExtra("item");
-                System.out.println("update code:" + db.updateItem(item)); }
+                System.out.println("update code:" + db.updateItem(item));
+                updateFragments();
+            }
         } else {
             Log.d("return", "return with code: " + resultCode);
             Log.d("request", "request code: " + requestCode);
         }
         //db.close();
-        updateFragments();
-        mViewPager.setCurrentItem((mCollectionPagerAdapter.getCount() - 1), true);
+
+
 
     }
     @Override

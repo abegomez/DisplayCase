@@ -44,6 +44,7 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return this.fragments.size();
     }
+
     @Override
     public CharSequence getPageTitle(int position) {
         return "OBJECT " + (position + 1);

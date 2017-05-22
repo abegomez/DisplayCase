@@ -88,6 +88,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             }
         });
 
+        //if coming from update button get info from previous activity
         if(intent.getIntExtra("requestCode", -1) == SingleItemDisplayActivity.UPDATE_ITEM_CODE) {
             item = this.getIntent().getParcelableExtra(ITEM);
             System.out.println("updating:" + item.getId());
@@ -95,6 +96,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             tvItemDescription.setText(item.getDescription());
             tvIsbn.setText(item.getIsbn());
             tvCondition.setText(item.getCondition());
+            //try using item image
             try {
                 BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
                 InputStream input = this.getContentResolver()
@@ -125,8 +127,10 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         if(resultCode == RESULT_OK){
             switch(requestCode) {
                 case CAMERA_IMAGE_REQUEST:
+                    //get image saved from camera intent and set to preview image
                     BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
                     try {
+                        //this is being called too many times, move to its own class or method
                         InputStream input = this.getContentResolver().openInputStream(photoUri);
                         bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
                         input.close();
@@ -149,7 +153,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
-
+    //send item back to previous view with RESULT_OK flag
     private void onAddItemClick() {
         Intent intent = new Intent();
         item.setName(tvItemName.getText().toString());
@@ -165,6 +169,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         finish();
     }
 
+    //make a temp file to store picture from camera intent
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
@@ -189,8 +194,12 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
     //change/delete image
     private void onImageLongClick() {
         System.out.println("image long clicked");
+        //externalfilesdir is directory defined in xml/file-path:
+        //<external-path name="external_files" path="Android/data/myapp.abrahamjohngomez.com.displaycase/files/Pictures"/>
+
         Log.d("output dir: ", getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        //if intent has available activity(camera)
         if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
             File photoFile = null;
             try {
