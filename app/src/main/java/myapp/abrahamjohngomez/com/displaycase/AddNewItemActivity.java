@@ -1,8 +1,13 @@
+/**
+ * Copyright (C) 2017  Some Copyright Goes Here
+ */
+
 package myapp.abrahamjohngomez.com.displaycase;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -18,6 +23,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.module.AppGlideModule;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
@@ -28,7 +37,15 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-//TODO: change to single onClick method with switch: case:R.id.buttonID
+/**
+ * Activity to add a new item or update an item in database.
+ * On an update intent, sets the input fields to current value.
+ * Image on click function will zoom image, onLongClick will start camera intent to take a new picture.
+ * Scan button allows scanning the barcode of an item to grab isbn number.
+ * Isbn will be used to pull up information on item in future update.
+ *
+ * @author Abraham Gomez
+ */
 public class AddNewItemActivity extends AppCompatActivity implements View.OnClickListener{
 
     private Button btScan, btAddItem;
@@ -39,41 +56,39 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
     public static final String ITEM = "Item";
     private static final int CAMERA_IMAGE_REQUEST = 19;
     private Item item;
-
-    Uri fileUri = null;
-    String mCurrentPhotoPath;
-    String imageFolderPath = null;
-    String imageName;
-    Uri photoUri;
-    Bitmap bitmap;
+    public Uri photoUri;
+    private Bitmap bitmap;
+    private File photoFile = null;
+    private String mImageFileLocation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_item_scan);
         intent = getIntent();
 
         toolbar = (Toolbar) findViewById(R.id.toolbar_add_item);
+        btScan = (Button) findViewById(R.id.btScan);
+        btAddItem = (Button) findViewById(R.id.btAddNewItem);
+        tvItemName = (TextView) findViewById(R.id.tvAddItemName);
+        tvItemDescription = (TextView) findViewById(R.id.tvAddItemDescription);
+        tvIsbn = (TextView) findViewById(R.id.tvAddItemIsbn);
+        tvCondition = (TextView) findViewById(R.id.tvAddItemCondition);
+        btZoomOrAddImage = (ImageButton) findViewById(R.id.ibZoomOrAddImage);
+
+
         toolbar.setTitle(intent.getStringExtra("title"));
+        btAddItem.setText(intent.getStringExtra("buttonText"));
         setSupportActionBar(toolbar);
 
-        btScan = (Button) findViewById(R.id.btScan);
         btScan.setOnClickListener(this);
-        btAddItem = (Button) findViewById(R.id.btAddNewItem);
         btAddItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 onAddItemClick();
             }
         });
-        btAddItem.setText(intent.getStringExtra("buttonText"));
-
-        tvItemName = (TextView) findViewById(R.id.tvAddItemName);
-        tvItemDescription = (TextView) findViewById(R.id.tvAddItemDescription);
-        tvIsbn = (TextView) findViewById(R.id.tvAddItemIsbn);
-        tvCondition = (TextView) findViewById(R.id.tvAddItemCondition);
-
-        btZoomOrAddImage = (ImageButton) findViewById(R.id.ibZoomOrAddImage);
         btZoomOrAddImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,14 +113,17 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             tvCondition.setText(item.getCondition());
             //try using item image
             try {
-                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                InputStream input = this.getContentResolver()
-                        .openInputStream(Uri.parse(item.getImage()));
-                Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-                input.close();
-                btZoomOrAddImage.setImageBitmap(bitmap);
-            } catch (IOException e ) {
-                e.printStackTrace();
+                RequestOptions options = new RequestOptions();
+                options.centerCrop(this).fitCenter();
+                Glide.with(this).load(item.getImage()).apply(options).into(btZoomOrAddImage);
+//                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+//                InputStream input = this.getContentResolver()
+//                        .openInputStream(Uri.parse(item.getImage()));
+//                Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+//                input.close();
+//                btZoomOrAddImage.setImageBitmap(bitmap);
+//            } catch (IOException e ) {
+//                e.printStackTrace();
             } catch (NullPointerException e1) {
                 e1.printStackTrace();
             }
@@ -113,6 +131,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             item = new Item();
         }
     }
+
     public void onClick(View v) {
         //responds to button click
         if(v.getId() == R.id.btScan){
@@ -121,6 +140,16 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             scanIntegrator.initiateScan();
         }
     }
+
+    /**
+     * Return result from camera intent or scan barcode intent.
+     * Camera intent sets image saved to preview
+     * Barcode scan result sets isbn number to received data
+     *
+     * @param requestCode camera intent or scan barcode intent identifier
+     * @param resultCode image or barcode scan successful
+     * @param intent intent data
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         //retrieve scan result
@@ -128,19 +157,29 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             switch(requestCode) {
                 case CAMERA_IMAGE_REQUEST:
                     //get image saved from camera intent and set to preview image
-                    BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+                    System.out.println(photoFile.getAbsolutePath());
                     try {
                         //this is being called too many times, move to its own class or method
-                        InputStream input = this.getContentResolver().openInputStream(photoUri);
-                        bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-                        input.close();
-                        btZoomOrAddImage.setImageBitmap(bitmap);
-                    } catch(IOException e) {
+                        RequestOptions options = new RequestOptions();
+                        options.centerCrop(this);
+                        options.fitCenter();
+                        Glide.with(btZoomOrAddImage.getContext()).load(photoFile).apply(options).into(btZoomOrAddImage);
+//                        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+//                        bitmapOptions.inJustDecodeBounds = true;
+//                        //InputStream input = this.getContentResolver().openInputStream(photoUri);
+//                        bitmap = BitmapFactory.decodeFile(mImageFileLocation, bitmapOptions);
+//
+//                        ImageRotation imageRotation = new ImageRotation();
+//                        bitmap = imageRotation.imageRotationValidator(bitmap, mImageFileLocation);
+//                        //input.close();
+//                        btZoomOrAddImage.setImageBitmap(bitmap);
+                    } catch(Exception e) {
                         e.printStackTrace();
                     }
+
                     break;
 
-                default:
+                case IntentIntegrator.REQUEST_CODE:
                     IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
                     if(scanningResult != null) {
                         //we have a result
@@ -153,7 +192,10 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
-    //send item back to previous view with RESULT_OK flag
+    /**
+     * Send item back to previous view with RESULT_OK flag
+     * Create intent with Item details and return to previous activity
+     */
     private void onAddItemClick() {
         Intent intent = new Intent();
         item.setName(tvItemName.getText().toString());
@@ -168,17 +210,23 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         setResult(RESULT_OK, intent);
         finish();
     }
-
-    //make a temp file to store picture from camera intent
+    /**
+     * Make a temp file to store picture from camera intent
+     * @return File temp file location
+     * @throws IOException image was not able to be created
+     */
     private File createImageFile() throws IOException {
         String timeStamp = new SimpleDateFormat("yyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
         File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-        mCurrentPhotoPath = image.getAbsolutePath();
+        mImageFileLocation = image.getAbsolutePath();
         return image;
     }
-    //zoom image
+
+    /**
+     * Zooms in or out when image is clicked
+     */
     private void onImageClick() {
         System.out.println("image clicked");
         ImageView zoomedImaged =  (ImageView) findViewById(R.id.expanded_image);
@@ -188,20 +236,23 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         }else {
             zoomedImaged.setVisibility(View.GONE);
         }
-
-
     }
-    //change/delete image
+
+    /**
+     * Change image when image is long-clicked.  Opens a new camera intent to get a picture for result.
+     * Image location is created and intent is started if able to create a temp file with createImageFile()
+     * externalfilesdir is directory defined in xml/file-path:
+     * <external-path name="external_files" path="Android/data/myapp.abrahamjohngomez.com.displaycase/files/Pictures"/>
+     */
     private void onImageLongClick() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         System.out.println("image long clicked");
-        //externalfilesdir is directory defined in xml/file-path:
-        //<external-path name="external_files" path="Android/data/myapp.abrahamjohngomez.com.displaycase/files/Pictures"/>
 
         Log.d("output dir: ", getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
         //if intent has available activity(camera)
         if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            File photoFile = null;
+
             try {
                 photoFile = createImageFile();
             } catch (IOException e) {
@@ -215,4 +266,4 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
-}
+}//end of class

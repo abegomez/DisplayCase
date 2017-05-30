@@ -1,3 +1,7 @@
+/**
+ * Copyright (C) 2017  Some Copyright Goes Here
+ */
+
 package myapp.abrahamjohngomez.com.displaycase;
 
 import android.graphics.Bitmap;
@@ -14,18 +18,32 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
  * Created by ryuhyoko on 4/18/2017.
+ * Fragments that contain individual item data.
+ * Fragments are created using Item object or item data parameters
+ * of the following:
+ *
+ * protected String name;
+ * protected String isbn;
+ * protected int id;
+ * protected String description;
+ * protected String image;
+ * protected String purchased;
+ * protected String condition;
+ *
+ * @author Abraham Gomez
  */
 
 public class ArrayListFragment extends Fragment {
-    int mNum;
 
-
-    //create a new isntance of Counting frag, providing num as an argument
+    //create a new instance of Counting frag, providing num as an argument
     static ArrayListFragment newInstance(int num) {
         ArrayListFragment f = new ArrayListFragment();
 
@@ -49,15 +67,7 @@ public class ArrayListFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
-    /*
-    protected String name;
-    protected String isbn;
-    protected int id;
-    protected String description;
-    protected String image;
-    protected String purchased;
-    protected String condition;
-     */
+
     static ArrayListFragment newInstance(Item item) {
         ArrayListFragment f = new ArrayListFragment();
         Bundle args = new Bundle();
@@ -76,7 +86,6 @@ public class ArrayListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
     }
     //fragment ui
     @Override
@@ -98,23 +107,29 @@ public class ArrayListFragment extends Fragment {
         ((TextView)tvCondition).setText("Condition:" + args.getString("itemCondition"));
 
         try {
-            boolean validUri= args.getString("itemImageSrc")!= null;
+            boolean validUri = args.getString("itemImageSrc")!= null;
             if(validUri) {
-                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-                InputStream input = getActivity().getContentResolver()
-                        .openInputStream(Uri.parse(args.getString("itemImageSrc")));
-                Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-                input.close();
-                ((ImageView) ivImage).setImageBitmap(bitmap);
+                RequestOptions options = new RequestOptions();
+                options.fitCenterTransform();
+                Glide
+                    .with(ivImage.getContext())
+                    .load(args.getString("itemImageSrc"))
+                    .apply(RequestOptions.fitCenterTransform())
+                    .apply(RequestOptions.centerCropTransform())
+                    .into((ImageView)ivImage);
+//                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+//                InputStream input = getActivity().getContentResolver()
+//                        .openInputStream(Uri.parse(args.getString("itemImageSrc")));
+//                Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
+//                input.close();
+//                ((ImageView) ivImage).setImageBitmap(bitmap);
             }
-        }catch (IOException e ) {
-            e.printStackTrace();
+
         } catch (NullPointerException e1) {
             e1.printStackTrace();
         }
         return v;
     }
-
 
 //    @Override
 //    public void onActivityCreated(Bundle savedInstanceState) {
