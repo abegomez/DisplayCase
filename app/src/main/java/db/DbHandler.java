@@ -14,6 +14,8 @@ import myapp.abrahamjohngomez.com.displaycase.Item;
 
 /**
  * Created by ryuhyoko on 4/23/2017.
+ * Copyright Abraham J Gomez 2017
+ *
  */
 
 public class DbHandler extends SQLiteOpenHelper {
