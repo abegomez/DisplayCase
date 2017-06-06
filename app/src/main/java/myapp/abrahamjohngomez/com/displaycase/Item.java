@@ -6,9 +6,10 @@ import android.os.Parcelable;
 import java.util.Date;
 
 /**
+ * Item class to store and receive information about a collection item
  * Created by ryuhyoko on 4/17/2017.
  */
-//TODO: finish doing the updateFragment method reusing the additem activity
+
 public class Item implements Parcelable{
     protected String name;
     protected String isbn;

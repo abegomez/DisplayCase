@@ -9,16 +9,16 @@
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:id="@+id/cvItems"
         android:layout_width="match_parent"
-        android:layout_height="140dp"
-        card_view:cardBackgroundColor="@color/Gainsboro"
+        android:layout_height="200dp"
+        card_view:cardBackgroundColor="@android:color/transparent"
         card_view:cardUseCompatPadding="true"
         card_view:cardCornerRadius="4dp"
-        card_view:cardElevation="4dp"
-        card_view:contentPaddingBottom="8dp"
-        card_view:contentPaddingLeft="8dp"
-        card_view:contentPaddingTop="8dp">
+        card_view:cardElevation="0dp"
+        card_view:contentPaddingBottom="0dp"
+        card_view:contentPaddingLeft="0dp"
+        card_view:contentPaddingTop="0dp">
 
-        <RelativeLayout
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:clickable="true"
@@ -26,8 +26,8 @@
 
             <ImageView
                 android:id="@+id/ivCardImage"
-                android:layout_width="160dp"
-                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
 
@@ -35,13 +35,21 @@
 
             <TextView
                 android:id="@+id/tvCardItemName"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@id/ivCardImage"
-                android:textSize="24sp" />
-
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:paddingLeft="4dp"
+                android:shadowColor="@color/DimGray"
+                android:shadowDx="4"
+                android:shadowDy="4"
+                android:shadowRadius="9"
+                android:textColor="#aaffffff"
+                android:textSize="18sp" />
+                <!--android:background="@color/Black"-->
             <TextView
                 android:id="@+id/tvCardItemDescription"
                 android:layout_width="wrap_content"
@@ -51,7 +59,7 @@
                 android:layout_toLeftOf="@+id/ivCardImage" />
 
 
-        </RelativeLayout>
+        </FrameLayout>
 
     </android.support.v7.widget.CardView>
 

@@ -27,6 +27,7 @@ import java.io.Console;
 import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -155,6 +156,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
 
     private void updateFragments() {
         fragments = getFragmentsFromDb();
+
         if(mCollectionPagerAdapter == null) {
             mCollectionPagerAdapter = new CollectionPagerAdapter(
                     getSupportFragmentManager(), fragments);

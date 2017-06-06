@@ -16,6 +16,9 @@ import android.widget.TextView;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
             itemName = (TextView) view.findViewById(R.id.tvCardItemName);
             itemDescription = (TextView) view.findViewById(R.id.tvCardItemDescription);
             imageView = (ImageView) view.findViewById(R.id.ivCardImage);
-            imageThumbnail = new GetImageThumbnail();
+            //imageThumbnail = new GetImageThumbnail();
         }
     }
     public CardAdapter(List<Item> itemsList) { this.items = itemsList; }
@@ -57,16 +60,21 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Item item = items.get(position);
         holder.itemName.setText(item.getName());
-        holder.itemDescription.setText(item.getDescription());
+        //holder.itemName.getBackground().setAlpha(50);
+        //holder.itemDescription.setText(item.getDescription());
         if(item.getImage() != null) {
-            try {
-                Uri photoUri = Uri.parse(item.getImage());
-                Context ct = holder.cv.getContext();
-                bitmap = imageThumbnail.getThumbnail(photoUri, ct);
-                holder.imageView.setImageBitmap(bitmap);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            Glide.with(holder.imageView.getContext()).load(item.getImage()).apply(RequestOptions.centerCropTransform()).into(holder.imageView);
+//            try {
+//                Uri photoUri = Uri.parse(item.getImage());
+//                Context ct = holder.cv.getContext();
+//                bitmap = imageThumbnail.getThumbnail(photoUri, ct);
+//                holder.imageView.setImageBitmap(bitmap);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+        } else {
+            Glide.with(holder.imageView.getContext()).load(R.drawable.placeholder).apply(RequestOptions.centerCropTransform()).into(holder.imageView);
+
         }
         Log.d("image source", item.getImage() + " item");
     }
