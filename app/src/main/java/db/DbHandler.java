@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import myapp.abrahamjohngomez.com.displaycase.Item;
@@ -27,15 +28,16 @@ public class DbHandler extends SQLiteOpenHelper {
     private static final String TABLE_ITEMS = "collection";
 
     //table columns
-    private static final String KEY_ID ="id";
-    private static final String KEY_NAME = "name";
-    private static final String KEY_ISBN = "isbn";
-    private static final String KEY_DESCRIPTION = "description";
-    private static final String KEY_IMAGE = "image";
-    private static final String KEY_PURCHASE_DATE = "purchase_date";
-    private static final String KEY_CONDITION = "condition";
+    public static final String KEY_ID ="id";
+    public static final String KEY_NAME = "name";
+    public static final String KEY_ISBN = "isbn";
+    public static final String KEY_DESCRIPTION = "description";
+    public static final String KEY_IMAGE = "image";
+    public static final String KEY_PURCHASE_DATE = "purchase_date";
+    public static final String KEY_CONDITION = "condition";
 
-    /*ql
+    private String query = "";
+    /*
     Item data
     protected String name;
     protected String isbn;
@@ -108,6 +110,42 @@ public class DbHandler extends SQLiteOpenHelper {
         values.put(KEY_CONDITION, item.getCondition());
         System.out.println("updating: " +item.getName());
         return db.update(TABLE_ITEMS, values, "id = ?", whereArgs);
+    }
+
+    /**
+     * Retrieve database items with specific sorted order
+     * order by name:asc/desc, recent:asc/desc, purchase data:asc/desc, favorites
+     */
+    public List<Item> getAllItems(HashMap<String, String> query) {
+        String table = TABLE_ITEMS;
+        String cols = query.get("cols");
+        String selection = query.get("where");
+        String selectionArgs = query.get("whereArgs");
+        String groupBy = query.get("groupBy");
+        String having = query.get("having");
+        String orderBy = query.get("orderBy");
+
+        List<Item> sortedList = new ArrayList<>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor res = db.query(table,null,null,null,groupBy,having,orderBy);
+        res.moveToFirst();
+
+        while (res.isAfterLast() == false) {
+            Item item = new Item();
+            item.setId(Integer.parseInt(res.getString(0)));
+            item.setName(res.getString(1));
+            item.setDescription(res.getString(2));
+            item.setIsbn(res.getString(3));
+            item.setImage(res.getString(4));
+            item.setPurchased(res.getString(5));
+            item.setCondition(res.getString(6));
+
+            //get string from each column and put into item
+            sortedList.add(item);
+            res.moveToNext();
+        }
+        res.close();
+        return sortedList;
     }
 
     public List<Item> getAllItems() {

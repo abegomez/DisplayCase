@@ -19,10 +19,11 @@ public class Item implements Parcelable{
     protected String purchased;
     protected String condition;
     protected String collection;
+    protected boolean favorite;
 
     public  Item() {}
 
-    public Item(String name, String isbn, int id, String description, String image, String purchased, String condition) {
+    public Item(String name, String isbn, int id, String description, String image, String purchased, String condition, boolean isFavorite) {
         this.name = name;
         this.isbn = isbn;
         this.id = id;
@@ -30,6 +31,7 @@ public class Item implements Parcelable{
         this.image = image;
         this.purchased = purchased;
         this.condition = condition;
+        favorite = isFavorite;
     }
     public Item(String name, String isbn, String description, String image, String purchased, String condition) {
         this.name = name;
@@ -38,6 +40,7 @@ public class Item implements Parcelable{
         this.image = image;
         this.purchased = purchased;
         this.condition = condition;
+        favorite = false;
     }
 
     public String getImage() {
@@ -100,6 +103,14 @@ public class Item implements Parcelable{
 
     public void setCollection(String collection) { this.collection = collection; }
 
+    public boolean isFavorite() {
+        return favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -115,6 +126,7 @@ public class Item implements Parcelable{
         dest.writeString(this.purchased);
         dest.writeString(this.condition);
         dest.writeString(this.collection);
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
     }
 
     protected Item(Parcel in) {
@@ -126,6 +138,7 @@ public class Item implements Parcelable{
         this.purchased = in.readString();
         this.condition = in.readString();
         this.collection = in.readString();
+        this.favorite = in.readByte() != 0;
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {

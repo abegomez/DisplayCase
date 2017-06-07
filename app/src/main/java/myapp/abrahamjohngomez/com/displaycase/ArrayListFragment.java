@@ -11,10 +11,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -54,7 +56,7 @@ public class ArrayListFragment extends Fragment {
         return f;
     }
     static ArrayListFragment newInstance(String itemName, String isbn, int id, String itemDescription,
-                                         String image, String purchased, String condition) {
+                                         String image, String purchased, String condition, boolean isFavorite) {
         ArrayListFragment f = new ArrayListFragment();
         Bundle args = new Bundle();
         args.putString("itemName", itemName);
@@ -64,6 +66,7 @@ public class ArrayListFragment extends Fragment {
         args.putString("itemImageSrc", image);
         args.putString("itemPurchased", purchased);
         args.putString("itemCondition", condition);
+        args.putBoolean("isFavorite", isFavorite);
         f.setArguments(args);
         return f;
     }
@@ -78,7 +81,7 @@ public class ArrayListFragment extends Fragment {
         args.putString("itemImageSrc", item.getImage());
         args.putString("itemPurchased", item.getPurchased());
         args.putString("itemCondition", item.getCondition());
-
+        args.putBoolean("isFavorite", item.isFavorite());
         f.setArguments(args);
         return f;
     }
@@ -105,6 +108,8 @@ public class ArrayListFragment extends Fragment {
         ((TextView)tvId).setText("ID:" + String.valueOf(args.getInt("itemId")));
         ((TextView)tvPurchased).setText("Purchased:" + args.getString("itemPurchased"));
         ((TextView)tvCondition).setText("Condition:" + args.getString("itemCondition"));
+
+        SingleItemDisplayActivity.favorited = args.getBoolean("isFavorite");
 
         try {
             boolean validUri = args.getString("itemImageSrc")!= null;
