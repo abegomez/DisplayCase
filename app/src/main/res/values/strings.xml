@@ -6,11 +6,22 @@
     <string name="title_activity_add_item">Add Item</string>
 
     <string name="title_activity_scan_barcode">Scan Barcode</string>
-    <string name="scan">Scan</string>
+    <string name="scan">Scan ISBN</string>
     <string name="description_zoom_touch_close"></string>
 
     <string name="navbar_edit"></string>
     <string name="navbar_add"></string>
     <string name="navbar_delete"></string>
     <string name="navbar_favorite"></string>
+
+    <string-array name="sort_spinner_item_array">
+        <item>Name Ascending</item>
+        <item>Name Descending</item>
+        <item>Recent Ascending</item>
+        <item>Recent Descending</item>
+        <item>Purchase Date Asc</item>
+        <item>Purchase Date Desc</item>
+        <item>Favorites</item>
+    </string-array>
+
 </resources>

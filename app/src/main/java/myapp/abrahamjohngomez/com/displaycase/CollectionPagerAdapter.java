@@ -34,11 +34,7 @@ public class CollectionPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public int getItemPosition(Object object) {
-        int index = fragments.indexOf(object);
-        if(index == -1)
-            return PagerAdapter.POSITION_NONE;
-        else
-            return index;
+        return POSITION_NONE;
     }
     @Override
     public int getCount() {

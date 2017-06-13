@@ -55,7 +55,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     private Item item;
     private final DbHandler db = new DbHandler(this);
     private String sortingOption = "";
-    private List<Fragment> fList = new ArrayList<Fragment>();
+
     public static boolean favorited = false;
     /**
      *
@@ -72,15 +72,51 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
 
 
     private List<Fragment> getFragmentsFromDb() {
-
+        List<Fragment> fList = new ArrayList<Fragment>();
         Log.d("Reading: ", "Reading all items..");
         HashMap<String, String> sortItemsMap = new HashMap<>();
+        Log.d("sorting option", sortingOption);
+        switch(sortingOption) {
+            case "Name Ascending":
+                Toast.makeText(this,
+                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+                sortItemsMap.put("orderBy", DbHandler.KEY_NAME + " COLLATE NOCASE ASC");
+                break;
+            case "Name Descending":
+                Toast.makeText(this,
+                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+                sortItemsMap.put("orderBy", DbHandler.KEY_NAME + " COLLATE NOCASE DESC");
+                break;
+            case "Recent Ascending":
+                Toast.makeText(this,
+                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+                break;
+            case "Recent Descending":
+                Toast.makeText(this,
+                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+                break;
+            case "Purchase Date Asc":
+                Toast.makeText(this,
+                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+                break;
+            case "Purchase Date Desc":
+                Toast.makeText(this,
+                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+                break;
+            case "Favorites":
+                Toast.makeText(this,
+                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+                break;
+            default:
+                Log.d("working", "nah");
+                break;
+        }
         sortItemsMap.put("cols", DbHandler.KEY_NAME);
         sortItemsMap.put("where", " ");
         sortItemsMap.put("whereArgs", " ");
         sortItemsMap.put("groupBy", DbHandler.KEY_NAME );
         sortItemsMap.put("having", null);
-        sortItemsMap.put("orderBy", DbHandler.KEY_NAME + " COLLATE NOCASE ASC");
+
 
         items = db.getAllItems(sortItemsMap);
 
@@ -163,8 +199,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                 }
             });
         }
-
-
     }
 
     private void updateCurrentFragment() {
@@ -266,8 +300,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 ((TextView) view).setText("Sort");
-                Toast.makeText(parent.getContext(),
-                        "Selected: " + parent.getItemAtPosition(position).toString(), Toast.LENGTH_SHORT).show();
+
                 sortingOption = parent.getItemAtPosition(position).toString();
                 updateFragments();
             }
