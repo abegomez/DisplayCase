@@ -20,6 +20,7 @@ public class Item implements Parcelable{
     protected String condition;
     protected String collection;
     protected boolean favorite;
+    protected String dateAdded;
 
     public  Item() {}
 
@@ -111,6 +112,14 @@ public class Item implements Parcelable{
         this.favorite = favorite;
     }
 
+    public String getDateAdded() {
+        return dateAdded;
+    }
+
+    public void setDateAdded(String dateAdded) {
+        this.dateAdded = dateAdded;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -127,6 +136,7 @@ public class Item implements Parcelable{
         dest.writeString(this.condition);
         dest.writeString(this.collection);
         dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
+        dest.writeString(this.dateAdded);
     }
 
     protected Item(Parcel in) {
@@ -139,6 +149,7 @@ public class Item implements Parcelable{
         this.condition = in.readString();
         this.collection = in.readString();
         this.favorite = in.readByte() != 0;
+        this.dateAdded = in.readString();
     }
 
     public static final Creator<Item> CREATOR = new Creator<Item>() {

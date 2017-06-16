@@ -78,34 +78,27 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         Log.d("sorting option", sortingOption);
         switch(sortingOption) {
             case "Name Ascending":
-                Toast.makeText(this,
-                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+
                 sortItemsMap.put("orderBy", DbHandler.KEY_NAME + " COLLATE NOCASE ASC");
                 break;
             case "Name Descending":
-                Toast.makeText(this,
-                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+
                 sortItemsMap.put("orderBy", DbHandler.KEY_NAME + " COLLATE NOCASE DESC");
                 break;
-            case "Recent Ascending":
-                Toast.makeText(this,
-                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+            case "Recent Newest":
+                sortItemsMap.put("orderBy", DbHandler.KEY_DATE_ADDED + " DESC");
                 break;
-            case "Recent Descending":
-                Toast.makeText(this,
-                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+            case "Recent Oldest":
+                sortItemsMap.put("orderBy", DbHandler.KEY_DATE_ADDED + " ASC");
                 break;
             case "Purchase Date Asc":
-                Toast.makeText(this,
-                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+
                 break;
             case "Purchase Date Desc":
-                Toast.makeText(this,
-                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+
                 break;
             case "Favorites":
-                Toast.makeText(this,
-                        "Selected: " + sortingOption, Toast.LENGTH_SHORT).show();
+
                 break;
             default:
                 Log.d("working", "nah");
@@ -300,7 +293,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
                 ((TextView) view).setText("Sort");
-
+                Toast.makeText(view.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 sortingOption = parent.getItemAtPosition(position).toString();
                 updateFragments();
             }

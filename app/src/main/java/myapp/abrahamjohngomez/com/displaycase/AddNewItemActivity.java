@@ -4,6 +4,8 @@
 
 package myapp.abrahamjohngomez.com.displaycase;
 
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -18,9 +20,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.annotation.GlideModule;
@@ -35,6 +39,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 /**
@@ -46,9 +51,9 @@ import java.util.Date;
  *
  * @author Abraham Gomez
  */
-public class AddNewItemActivity extends AppCompatActivity implements View.OnClickListener{
+public class AddNewItemActivity extends AppCompatActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
 
-    private Button btScan, btAddItem;
+    private Button btScan, btAddItem, btPurchaseDate;
     private TextView tvFormatTxt, tvContentTxt, tvItemName, tvItemDescription, tvIsbn, tvCondition;
     private ImageButton btZoomOrAddImage;
     private Toolbar toolbar;
@@ -76,7 +81,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         tvIsbn = (TextView) findViewById(R.id.tvAddItemIsbn);
         tvCondition = (TextView) findViewById(R.id.tvAddItemCondition);
         btZoomOrAddImage = (ImageButton) findViewById(R.id.ibZoomOrAddImage);
-
+        btPurchaseDate = (Button) findViewById(R.id.btPurchaseDate);
 
         toolbar.setTitle(intent.getStringExtra("title"));
         btAddItem.setText(intent.getStringExtra("buttonText"));
@@ -111,19 +116,12 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             tvItemDescription.setText(item.getDescription());
             tvIsbn.setText(item.getIsbn());
             tvCondition.setText(item.getCondition());
+            btPurchaseDate.setText(item.getPurchased());
             //try using item image
             try {
                 RequestOptions options = new RequestOptions();
                 options.centerCrop(this).fitCenter();
                 Glide.with(this).load(item.getImage()).apply(options).into(btZoomOrAddImage);
-//                BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-//                InputStream input = this.getContentResolver()
-//                        .openInputStream(Uri.parse(item.getImage()));
-//                Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-//                input.close();
-//                btZoomOrAddImage.setImageBitmap(bitmap);
-//            } catch (IOException e ) {
-//                e.printStackTrace();
             } catch (NullPointerException e1) {
                 e1.printStackTrace();
             }
@@ -164,21 +162,10 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
                         options.centerCrop(this);
                         options.fitCenter();
                         Glide.with(btZoomOrAddImage.getContext()).load(photoFile).apply(options).into(btZoomOrAddImage);
-//                        BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
-//                        bitmapOptions.inJustDecodeBounds = true;
-//                        //InputStream input = this.getContentResolver().openInputStream(photoUri);
-//                        bitmap = BitmapFactory.decodeFile(mImageFileLocation, bitmapOptions);
-//
-//                        ImageRotation imageRotation = new ImageRotation();
-//                        bitmap = imageRotation.imageRotationValidator(bitmap, mImageFileLocation);
-//                        //input.close();
-//                        btZoomOrAddImage.setImageBitmap(bitmap);
                     } catch(Exception e) {
                         e.printStackTrace();
                     }
-
                     break;
-
                 case IntentIntegrator.REQUEST_CODE:
                     IntentResult scanningResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
                     if(scanningResult != null) {
@@ -192,6 +179,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             }
         }
     }
+
     /**
      * Send item back to previous view with RESULT_OK flag
      * Create intent with Item details and return to previous activity
@@ -201,6 +189,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         item.setName(tvItemName.getText().toString());
         item.setDescription(tvItemDescription.getText().toString());
         item.setIsbn(tvIsbn.getText().toString());
+        item.setPurchased(btPurchaseDate.getText().toString());
         if(photoUri != null) {
             item.setImage(photoUri.toString());
         }
@@ -210,6 +199,7 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
         setResult(RESULT_OK, intent);
         finish();
     }
+
     /**
      * Make a temp file to store picture from camera intent
      * @return File temp file location
@@ -252,7 +242,6 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
 
         //if intent has available activity(camera)
         if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
-
             try {
                 photoFile = createImageFile();
             } catch (IOException e) {
@@ -265,5 +254,31 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
                 startActivityForResult(takePictureIntent, CAMERA_IMAGE_REQUEST);
             }
         }
+    }
+
+    /**
+     * Open dialog to input purchase date
+     * @param v purchase button
+     */
+    public void pickPurchaseDate(View v) {
+        DatePickerFragment newFragment = new DatePickerFragment();
+        newFragment.show(getFragmentManager(),"datePicker");
+    }
+
+    /**
+     * Set purchase date on button after setting date in dialog
+     * @param view dialog view
+     * @param year
+     * @param month
+     * @param day
+     */
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int day) {
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        cal.set(year, month, day);
+        cal.set(Calendar.YEAR, year);
+        //Date date = new Date(cal.get(Calendar.YEAR, year), month, day);
+        btPurchaseDate.setText("Purchased " + dateFormat.format(cal.getTime()));
     }
 }//end of class

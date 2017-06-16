@@ -1,145 +1,160 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="myapp.abrahamjohngomez.com.displaycase.AddNewItemActivity"
     tools:showIn="@layout/activity_add_item_scan">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <Button
-        android:id="@+id/btScan"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="@string/scan"
-        app:layout_constraintLeft_toRightOf="@+id/tvAddItemIsbn"
-        android:layout_marginLeft="4dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddItemDescription"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/tvAddItemCondition"
-        android:layout_marginStart="8dp"
-        app:layout_constraintVertical_bias="0.571" />
+        <ImageButton
+            android:id="@+id/ibZoomOrAddImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:background="@android:color/transparent"
+            android:cropToPadding="true"
+            android:padding="30dp"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/placeholder" />
 
-    <TextView
-        android:id="@+id/tvScan_format"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/btScan"
-        app:layout_constraintLeft_toLeftOf="@+id/btScan"
-        android:layout_centerHorizontal="true"
-        android:textIsSelectable="true" />
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/tvScan_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/tvScan_format"
-        app:layout_constraintLeft_toLeftOf="@+id/btScan"
-        android:layout_centerHorizontal="true"
-        android:textIsSelectable="true" />
+            <Button
+                android:id="@+id/btScan"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="4dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/scan"
+                app:layout_constraintLeft_toRightOf="@+id/tvAddItemIsbn"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddItemDescription" />
 
-    <EditText
-        android:id="@+id/tvAddItemName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Name"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp" />
+            <TextView
+                android:id="@+id/tvScan_format"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textIsSelectable="true"
+                app:layout_constraintLeft_toLeftOf="@+id/btScan"
+                app:layout_constraintTop_toBottomOf="@+id/btScan" />
 
-    <EditText
-        android:id="@+id/tvAddItemDescription"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textMultiLine"
-        android:text="Item Description"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddItemName"
-        android:layout_marginStart="8dp" />
+            <TextView
+                android:id="@+id/tvScan_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:textIsSelectable="true"
+                app:layout_constraintLeft_toLeftOf="@+id/btScan"
+                app:layout_constraintTop_toBottomOf="@+id/tvScan_format" />
 
-    <EditText
-        android:id="@+id/tvAddItemIsbn"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="ISBN"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddItemDescription"
-        android:layout_marginStart="8dp" />
+            <EditText
+                android:id="@+id/tvAddItemName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Name"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="parent"
+                tools:layout_editor_absoluteY="8dp" />
 
-    <EditText
-        android:id="@+id/tvAddItemCondition"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="-75dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:inputType="textPersonName"
-        android:text="Condition"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddItemIsbn" />
+            <EditText
+                android:id="@+id/tvAddItemDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textMultiLine"
+                android:text="Item Description"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddItemName" />
 
-    <Button
-        android:id="@+id/btAddNewItem"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:onClick="onAddItemClick"
-        android:text="Add Item"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp" />
+            <EditText
+                android:id="@+id/tvAddItemIsbn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="ISBN"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddItemDescription" />
 
-    <ImageButton
-        android:id="@+id/ibZoomOrAddImage"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/transparent"
-        android:cropToPadding="true"
-        android:onClick="onClickZoomOrAddImage"
-        android:padding="30dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintBottom_toTopOf="@+id/btAddNewItem"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvAddItemCondition"
-        app:srcCompat="@drawable/placeholder" />
+            <EditText
+                android:id="@+id/tvAddItemCondition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:ems="10"
+                android:inputType="textPersonName"
+                android:text="Condition"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddItemIsbn"
+                android:layout_marginStart="8dp"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageView
-        android:id="@+id/expanded_image"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_margin="0dp"
-        android:contentDescription="@string/description_zoom_touch_close"
-        android:visibility="invisible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/placeholder"
-        android:elevation="2dp"
-        app:layout_constraintVertical_bias="0.0" />
+            <Button
+                android:id="@+id/btAddNewItem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Add Item"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/btPurchaseDate" />
 
-</android.support.constraint.ConstraintLayout>
+
+
+            <ImageView
+                android:id="@+id/expanded_image"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_margin="0dp"
+                android:contentDescription="@string/description_zoom_touch_close"
+                android:elevation="2dp"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0"
+                app:srcCompat="@drawable/placeholder" />
+
+            <Button
+                android:id="@+id/btPurchaseDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:onClick="pickPurchaseDate"
+                android:text="Purchase Date"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tvAddItemCondition" />
+
+        </android.support.constraint.ConstraintLayout>
+
+
+    </LinearLayout>
+</ScrollView>
 
 

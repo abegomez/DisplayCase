@@ -17,8 +17,8 @@
     <string-array name="sort_spinner_item_array">
         <item>Name Ascending</item>
         <item>Name Descending</item>
-        <item>Recent Ascending</item>
-        <item>Recent Descending</item>
+        <item>Recent Newest</item>
+        <item>Recent Oldest</item>
         <item>Purchase Date Asc</item>
         <item>Purchase Date Desc</item>
         <item>Favorites</item>

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -35,7 +36,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String KEY_IMAGE = "image";
     public static final String KEY_PURCHASE_DATE = "purchase_date";
     public static final String KEY_CONDITION = "condition";
-
+    public static final String KEY_DATE_ADDED = "added_date";
     private String query = "";
     /*
     Item data
@@ -48,7 +49,6 @@ public class DbHandler extends SQLiteOpenHelper {
     protected String condition;
 
      */
-
 
     public DbHandler(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -64,7 +64,8 @@ public class DbHandler extends SQLiteOpenHelper {
                 + KEY_ISBN + " TEXT,"
                 + KEY_IMAGE + " TEXT,"
                 + KEY_PURCHASE_DATE + " TEXT,"
-                + KEY_CONDITION + " TEXT"
+                + KEY_CONDITION + " TEXT,"
+                + KEY_DATE_ADDED + " TEXT default current_timestamp"
                 + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -139,7 +140,7 @@ public class DbHandler extends SQLiteOpenHelper {
             item.setImage(res.getString(4));
             item.setPurchased(res.getString(5));
             item.setCondition(res.getString(6));
-
+            item.setDateAdded(res.getString(7));
             //get string from each column and put into item
             sortedList.add(item);
             res.moveToNext();
@@ -163,7 +164,7 @@ public class DbHandler extends SQLiteOpenHelper {
             item.setImage(res.getString(4));
             item.setPurchased(res.getString(5));
             item.setCondition(res.getString(6));
-
+            item.setDateAdded(res.getString(7));
             //get string from each column and put into item
             itemArrayList.add(item);
             res.moveToNext();
@@ -190,6 +191,7 @@ public class DbHandler extends SQLiteOpenHelper {
                 item.setImage(res.getString(res.getColumnIndex(KEY_IMAGE)));
                 item.setPurchased(res.getString(res.getColumnIndex(KEY_PURCHASE_DATE)));
                 item.setCondition(res.getString(res.getColumnIndex(KEY_CONDITION)));
+                item.setDateAdded(res.getString(res.getColumnIndex(KEY_DATE_ADDED)));
             }
             return item;
         } finally {
