@@ -55,20 +55,6 @@
             android:title="@string/navbar_delete"
             app:showAsAction="always" />
 
-        <Button
-            android:id="@+id/action_favorite"
-            android:visibility="visible"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentRight="false"
-            android:layout_toRightOf="@+id/action_delete"
-            android:background="@drawable/ic_fav_white"
-            android:checkable="true"
-            android:enabled="true"
-            android:icon="@android:drawable/btn_star"
-            android:title="@string/navbar_favorite"
-            app:showAsAction="always" />
-
 
     </RelativeLayout>
 </android.support.v7.widget.Toolbar>

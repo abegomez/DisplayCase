@@ -37,6 +37,7 @@ public class DbHandler extends SQLiteOpenHelper {
     public static final String KEY_PURCHASE_DATE = "purchase_date";
     public static final String KEY_CONDITION = "condition";
     public static final String KEY_DATE_ADDED = "added_date";
+    public static final String KEY_FAVORITE = "favorite";
     private String query = "";
     /*
     Item data
@@ -65,7 +66,8 @@ public class DbHandler extends SQLiteOpenHelper {
                 + KEY_IMAGE + " TEXT,"
                 + KEY_PURCHASE_DATE + " TEXT,"
                 + KEY_CONDITION + " TEXT,"
-                + KEY_DATE_ADDED + " TEXT default current_timestamp"
+                + KEY_DATE_ADDED + " TEXT default current_timestamp,"
+                + KEY_FAVORITE + " INTEGER"
                 + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -87,7 +89,7 @@ public class DbHandler extends SQLiteOpenHelper {
         values.put(KEY_IMAGE, item.getImage());
         values.put(KEY_PURCHASE_DATE, item.getPurchased());
         values.put(KEY_CONDITION, item.getCondition());
-
+        values.put(KEY_FAVORITE, item.isFavorite());
         //insert row
         db.insert(TABLE_ITEMS, null, values);
         db.close();
@@ -111,6 +113,14 @@ public class DbHandler extends SQLiteOpenHelper {
         values.put(KEY_CONDITION, item.getCondition());
         System.out.println("updating: " +item.getName());
         return db.update(TABLE_ITEMS, values, "id = ?", whereArgs);
+    }
+    public Integer updateFavorite(Item item) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        String[] whereArgs = {String.valueOf(item.getId())};
+        values.put(KEY_FAVORITE, item.isFavorite());
+        System.out.println(item.getName() + "Favorited!");
+        return db.update(TABLE_ITEMS, values, "id=?", whereArgs);
     }
 
     /**

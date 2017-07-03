@@ -28,6 +28,7 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.bumptech.glide.annotation.GlideModule;
+import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.module.AppGlideModule;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -116,14 +117,22 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
             tvItemDescription.setText(item.getDescription());
             tvIsbn.setText(item.getIsbn());
             tvCondition.setText(item.getCondition());
-            btPurchaseDate.setText(item.getPurchased());
+            if(item.getPurchased() != null) {
+                btPurchaseDate.setText(item.getPurchased());
+            }
             //try using item image
-            try {
+            if(item.getImage() != null){
+                try {
+                    RequestOptions options = new RequestOptions();
+                    options.centerCrop(this).fitCenter();
+                    Glide.with(this).load(item.getImage()).apply(options).into(btZoomOrAddImage);
+                } catch (NullPointerException e1) {
+                    e1.printStackTrace();
+                }
+            } else {
                 RequestOptions options = new RequestOptions();
                 options.centerCrop(this).fitCenter();
-                Glide.with(this).load(item.getImage()).apply(options).into(btZoomOrAddImage);
-            } catch (NullPointerException e1) {
-                e1.printStackTrace();
+                Glide.with(this).load(R.drawable.placeholder).apply(options).into(btZoomOrAddImage);
             }
         } else {
             item = new Item();

@@ -56,7 +56,7 @@ public class ArrayListFragment extends Fragment {
         return f;
     }
     static ArrayListFragment newInstance(String itemName, String isbn, int id, String itemDescription,
-                                         String image, String purchased, String condition, boolean isFavorite) {
+                                         String image, String purchased, String condition, int isFavorite) {
         ArrayListFragment f = new ArrayListFragment();
         Bundle args = new Bundle();
         args.putString("itemName", itemName);
@@ -66,7 +66,7 @@ public class ArrayListFragment extends Fragment {
         args.putString("itemImageSrc", image);
         args.putString("itemPurchased", purchased);
         args.putString("itemCondition", condition);
-        args.putBoolean("isFavorite", isFavorite);
+        args.putInt("isFavorite", isFavorite);
         f.setArguments(args);
         return f;
     }
@@ -81,7 +81,7 @@ public class ArrayListFragment extends Fragment {
         args.putString("itemImageSrc", item.getImage());
         args.putString("itemPurchased", item.getPurchased());
         args.putString("itemCondition", item.getCondition());
-        args.putBoolean("isFavorite", item.isFavorite());
+        args.putInt("isFavorite", item.isFavorite());
         f.setArguments(args);
         return f;
     }
@@ -109,7 +109,7 @@ public class ArrayListFragment extends Fragment {
         ((TextView)tvPurchased).setText("Purchased:" + args.getString("itemPurchased"));
         ((TextView)tvCondition).setText("Condition:" + args.getString("itemCondition"));
 
-        SingleItemDisplayActivity.favorited = args.getBoolean("isFavorite");
+        //SingleItemDisplayActivity.favorited = args.getBoolean("isFavorite");
 
         try {
             boolean validUri = args.getString("itemImageSrc")!= null;

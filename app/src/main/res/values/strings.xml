@@ -19,9 +19,6 @@
         <item>Name Descending</item>
         <item>Recent Newest</item>
         <item>Recent Oldest</item>
-        <item>Purchase Date Asc</item>
-        <item>Purchase Date Desc</item>
-        <item>Favorites</item>
     </string-array>
 
 </resources>

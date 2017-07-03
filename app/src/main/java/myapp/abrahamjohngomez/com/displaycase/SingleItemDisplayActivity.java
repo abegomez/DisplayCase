@@ -49,7 +49,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     List<Fragment> fragments = new ArrayList<>();
     public static final int ADD_ITEM_RESULT_CODE = 17;
     public static final int UPDATE_ITEM_CODE = 18;
-    public static int count = 22;
+
     private Toolbar toolbar;
     private RelativeLayout bottomToolbar;
     private Item item;
@@ -78,11 +78,9 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         Log.d("sorting option", sortingOption);
         switch(sortingOption) {
             case "Name Ascending":
-
                 sortItemsMap.put("orderBy", DbHandler.KEY_NAME + " COLLATE NOCASE ASC");
                 break;
             case "Name Descending":
-
                 sortItemsMap.put("orderBy", DbHandler.KEY_NAME + " COLLATE NOCASE DESC");
                 break;
             case "Recent Newest":
@@ -90,12 +88,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                 break;
             case "Recent Oldest":
                 sortItemsMap.put("orderBy", DbHandler.KEY_DATE_ADDED + " ASC");
-                break;
-            case "Purchase Date Asc":
-
-                break;
-            case "Purchase Date Desc":
-
                 break;
             case "Favorites":
 
@@ -109,7 +101,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         sortItemsMap.put("whereArgs", " ");
         sortItemsMap.put("groupBy", DbHandler.KEY_NAME );
         sortItemsMap.put("having", null);
-
 
         items = db.getAllItems(sortItemsMap);
 
@@ -156,15 +147,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         toolbar = (Toolbar) findViewById(R.id.toolbar_single_item);
         setSupportActionBar(toolbar);
         bottomToolbar = (RelativeLayout) findViewById(R.id.bnButtons);
-        if(!favorited) {
-            bottomToolbar.findViewById(R.id.action_favorite)
-                    .setBackground(getResources()
-                            .getDrawable(android.R.drawable.btn_star_big_off));
-        } else {
-            bottomToolbar.findViewById(R.id.action_favorite)
-                    .setBackground(getResources()
-                            .getDrawable(android.R.drawable.btn_star_big_on));
-        }
+
         for(int i = 0; i < bottomToolbar.getChildCount(); i++) {
             View child = bottomToolbar.getChildAt(i);
             child.setOnClickListener(new RelativeLayout.OnClickListener() {
@@ -183,9 +166,10 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                         //edit item
                         updateCurrentFragment();
                         break;
-                    case R.id.action_favorite:
-
-                        break;
+//                    case R.id.action_favorite:
+//                        Button favButton = (Button) findViewById(R.id.action_favorite);
+//                        favButton.setBackgroundResource(R.drawable.ic_action_name_gold_favorite);
+//                        break;
                     default:
                         break;
                 }
@@ -272,8 +256,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
             Log.d("request", "request code: " + requestCode);
         }
         //db.close();
-
-
 
     }
     @Override
