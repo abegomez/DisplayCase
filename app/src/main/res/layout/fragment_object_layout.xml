@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btFavorite"
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:layout_gravity="bottom|end"

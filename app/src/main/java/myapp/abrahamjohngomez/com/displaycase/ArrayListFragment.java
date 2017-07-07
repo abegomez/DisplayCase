@@ -6,6 +6,7 @@ package myapp.abrahamjohngomez.com.displaycase;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -43,7 +44,7 @@ import java.io.InputStream;
  * @author Abraham Gomez
  */
 
-public class ArrayListFragment extends Fragment {
+public class ArrayListFragment extends Fragment implements View.OnClickListener {
 
     //create a new instance of Counting frag, providing num as an argument
     static ArrayListFragment newInstance(int num) {
@@ -55,6 +56,7 @@ public class ArrayListFragment extends Fragment {
         f.setArguments(args);
         return f;
     }
+
     static ArrayListFragment newInstance(String itemName, String isbn, int id, String itemDescription,
                                          String image, String purchased, String condition, int isFavorite) {
         ArrayListFragment f = new ArrayListFragment();
@@ -102,13 +104,20 @@ public class ArrayListFragment extends Fragment {
         View ivImage = v.findViewById(R.id.ivImage);
         View tvPurchased = v.findViewById(R.id.tvPurchased);
         View tvCondition = v.findViewById(R.id.tvCondition);
+        View btFavorite = v.findViewById(R.id.btFavorite);
+        ((Button)btFavorite).setOnClickListener(this);
         ((TextView)tvName).setText(args.getString("itemName"));
         ((TextView)tvDescription).setText(args.getString("itemDescription"));
         ((TextView)tvIsbn).setText("ISBN:" + args.getString("itemIsbn"));
         ((TextView)tvId).setText("ID:" + String.valueOf(args.getInt("itemId")));
         ((TextView)tvPurchased).setText("Purchased:" + args.getString("itemPurchased"));
         ((TextView)tvCondition).setText("Condition:" + args.getString("itemCondition"));
-
+        if(args.getInt("isFavorite") == 1) {
+            ((Button)btFavorite).setBackgroundResource(R.drawable.ic_action_name_gold_favorite);
+            ((Button)btFavorite).setTag(R.drawable.ic_action_name_gold_favorite);
+        }else {
+            ((Button)btFavorite).setTag(R.drawable.ic_fav_white);
+        }
         //SingleItemDisplayActivity.favorited = args.getBoolean("isFavorite");
 
         try {
@@ -134,6 +143,20 @@ public class ArrayListFragment extends Fragment {
             e1.printStackTrace();
         }
         return v;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch(v.getId()) {
+            case R.id.btFavorite:
+                if(v.getTag().equals(R.drawable.ic_fav_white)){
+                    ((Button)v).setBackgroundResource(R.drawable.ic_action_name_gold_favorite);
+                    ((Button)v).setTag(R.drawable.ic_action_name_gold_favorite);
+                }else {
+                    ((Button)v).setBackgroundResource(R.drawable.ic_fav_white);
+                    ((Button)v).setTag(R.drawable.ic_fav_white);
+                }
+        }
     }
 
 //    @Override

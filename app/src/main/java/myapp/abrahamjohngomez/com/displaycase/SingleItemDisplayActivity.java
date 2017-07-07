@@ -273,7 +273,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
                 ((TextView) view).setText("Sort");
                 Toast.makeText(view.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
                 sortingOption = parent.getItemAtPosition(position).toString();
