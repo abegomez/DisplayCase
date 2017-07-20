@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimary">#673ab7</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#ff7e40</color>
     <color name="White">#ffffff</color>
     <color name="Ivory">#FFFFF0</color>
     <color name="LightYellow">#FFFFE0</color>
@@ -39,7 +39,7 @@
     <color name="Linen">#FAF0E6</color>
     <color name="AntiqueWhite">#FAEBD7</color>
     <color name="Salmon">#FA8072</color>
-    <color name="GhostWhite">#F8F8FF</color>
+    <color name="GhostWhite">#f8f8ff</color>
     <color name="MintCream">#F5FFFA</color>
     <color name="WhiteSmoke">#F5F5F5</color>
     <color name="Beige">#F5F5DC</color>
@@ -105,7 +105,7 @@
     <color name="LawnGreen">#7CFC00</color>
     <color name="MediumSlateBlue">#7B68EE</color>
     <color name="LightSlateGray">#778899</color>
-    <color name="SlateGray">#708090</color>
+    <color name="SlateGray">#5a6672</color>
     <color name="OliveDrab">#6B8E23</color>
     <color name="SlateBlue">#6A5ACD</color>
     <color name="DimGray">#4c4b4b</color>
@@ -121,7 +121,7 @@
     <color name="Turquoise">#40E0D0</color>
     <color name="MediumSeaGreen">#3CB371</color>
     <color name="LimeGreen">#32CD32</color>
-    <color name="DarkSlateGray">#2F4F4F</color>
+    <color name="DarkSlateGray">#2f4f4f</color>
     <color name="SeaGreen">#2E8B57</color>
     <color name="ForestGreen">#228B22</color>
     <color name="LightSeaGreen">#20B2AA</color>
@@ -145,4 +145,5 @@
     <color name="Black">#000000</color>
     <color name="orangegrey">#938b81</color>
     <color name="text">#a0ffece0</color>
+    <color name="primary_text_default_material_light">#de000000</color>
 </resources>

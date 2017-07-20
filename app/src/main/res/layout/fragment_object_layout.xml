@@ -5,7 +5,6 @@
     android:id="@+id/fragment_collection_object"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#3e4466"
     android:orientation="vertical">
 
     <LinearLayout
@@ -44,7 +43,6 @@
             android:layout_weight="1"
             android:text="Item Name"
             android:textAlignment="center"
-            android:textColor="@color/text"
             android:textSize="30sp" />
 
         <TextView
@@ -54,7 +52,6 @@
             android:paddingStart="16dp"
             android:text="Item Description"
             android:textAlignment="viewStart"
-            android:textColor="@color/text"
             android:textSize="20sp" />
 
         <TextView
@@ -64,7 +61,6 @@
             android:paddingStart="16dp"
             android:text="ISBN number"
             android:textAlignment="viewStart"
-            android:textColor="@color/text"
             android:textSize="20sp" />
 
         <TextView
@@ -74,7 +70,6 @@
             android:paddingStart="16dp"
             android:text="item id"
             android:textAlignment="viewStart"
-            android:textColor="@color/text"
             android:textSize="20sp" />
 
         <TextView
@@ -84,7 +79,6 @@
             android:paddingStart="16dp"
             android:text="ISBN number"
             android:textAlignment="viewStart"
-            android:textColor="@color/text"
             android:textSize="20sp" />
 
         <TextView
@@ -94,7 +88,6 @@
             android:paddingStart="16dp"
             android:text="ISBN number"
             android:textAlignment="viewStart"
-            android:textColor="@color/text"
             android:textSize="20sp" />
 
         <!--

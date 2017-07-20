@@ -3,7 +3,8 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
+    android:background="@color/White"
     android:gravity="right"
-    android:padding="10dp"
-    android:textColor="@color/White"
-    />
+    android:padding="8dp"
+    android:textColor="?android:attr/colorPrimary"
+    android:textSize="20sp" />

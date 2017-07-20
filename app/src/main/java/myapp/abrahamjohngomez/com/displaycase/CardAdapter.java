@@ -63,18 +63,13 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.MyViewHolder> 
         //holder.itemName.getBackground().setAlpha(50);
         //holder.itemDescription.setText(item.getDescription());
         if(item.getImage() != null) {
-            Glide.with(holder.imageView.getContext()).load(item.getImage()).apply(RequestOptions.centerCropTransform()).into(holder.imageView);
-//            try {
-//                Uri photoUri = Uri.parse(item.getImage());
-//                Context ct = holder.cv.getContext();
-//                bitmap = imageThumbnail.getThumbnail(photoUri, ct);
-//                holder.imageView.setImageBitmap(bitmap);
-//            } catch (Exception e) {
-//                e.printStackTrace();
-//            }
+            Glide.with(holder.imageView.getContext())
+                    .load(item.getImage()).apply(RequestOptions.centerCropTransform())
+                    .into(holder.imageView);
         } else {
-            Glide.with(holder.imageView.getContext()).load(R.drawable.placeholder).apply(RequestOptions.centerCropTransform()).into(holder.imageView);
-
+            Glide.with(holder.imageView.getContext())
+                    .load(R.drawable.placeholder).apply(RequestOptions.centerCropTransform())
+                    .into(holder.imageView);
         }
         Log.d("image source", item.getImage() + " item");
     }
