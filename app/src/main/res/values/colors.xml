@@ -144,4 +144,5 @@
     <color name="Navy">#000080</color>
     <color name="Black">#000000</color>
     <color name="orangegrey">#938b81</color>
+    <color name="text">#a0ffece0</color>
 </resources>

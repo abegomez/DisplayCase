@@ -20,8 +20,7 @@ public class CardViewActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_card_view);
-
-
+        
         DbHandler db = new DbHandler(this);
         items = db.getAllItems();
         cardAdapter = new CardAdapter(items);
@@ -31,6 +30,7 @@ public class CardViewActivity extends AppCompatActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(cardAdapter);
         prepareItemData();
+
     }
 
     private void prepareItemData() {

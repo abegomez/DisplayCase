@@ -45,11 +45,9 @@ import java.io.InputStream;
  */
 
 public class ArrayListFragment extends Fragment implements View.OnClickListener {
-
     //create a new instance of Counting frag, providing num as an argument
     static ArrayListFragment newInstance(int num) {
         ArrayListFragment f = new ArrayListFragment();
-
         //supply num input as an argument
         Bundle args = new Bundle();
         args.putInt("num", num);
@@ -152,10 +150,13 @@ public class ArrayListFragment extends Fragment implements View.OnClickListener 
                 if(v.getTag().equals(R.drawable.ic_fav_white)){
                     ((Button)v).setBackgroundResource(R.drawable.ic_action_name_gold_favorite);
                     ((Button)v).setTag(R.drawable.ic_action_name_gold_favorite);
+
                 }else {
                     ((Button)v).setBackgroundResource(R.drawable.ic_fav_white);
                     ((Button)v).setTag(R.drawable.ic_fav_white);
                 }
+                ((SingleItemDisplayActivity)getActivity()).setFavorited();
+                break;
         }
     }
 

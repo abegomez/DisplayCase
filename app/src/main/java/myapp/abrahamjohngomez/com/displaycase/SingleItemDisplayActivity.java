@@ -41,7 +41,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import db.DbHandler;
-//TODO: Image zoom/edit/delete image
+
 public class SingleItemDisplayActivity extends AppCompatActivity{
     CollectionPagerAdapter mCollectionPagerAdapter;
     ViewPager mViewPager;
@@ -90,12 +90,12 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                 sortItemsMap.put("orderBy", DbHandler.KEY_DATE_ADDED + " ASC");
                 break;
             case "Favorites":
-
                 break;
             default:
                 Log.d("working", "nah");
                 break;
         }
+
         sortItemsMap.put("cols", DbHandler.KEY_NAME);
         sortItemsMap.put("where", " ");
         sortItemsMap.put("whereArgs", " ");
@@ -107,11 +107,9 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         //items = db.getAllItems();
 
         for(Item it : items) {
-            fList.add(ArrayListFragment.newInstance(it.getName(),
-                it.getIsbn(), it.getId(),it.getDescription(),
-                it.getImage(), it.getPurchased(), it.getCondition(),it.isFavorite())
-            );
+            fList.add(ArrayListFragment.newInstance(it));
         }
+
         return fList;
     }
 
@@ -129,12 +127,10 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
     @Override
     public void onStart() {
         super.onStart();
-
     }
     @Override
     protected void onResume() {
         super.onResume();
-
     }
 
     @Override
@@ -150,6 +146,8 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
 
         for(int i = 0; i < bottomToolbar.getChildCount(); i++) {
             View child = bottomToolbar.getChildAt(i);
+            if(child.getId() == R.id.sortSpinner)
+                continue;
             child.setOnClickListener(new RelativeLayout.OnClickListener() {
                 @Override
                 public void onClick(View item) {
@@ -166,10 +164,6 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                         //edit item
                         updateCurrentFragment();
                         break;
-//                    case R.id.action_favorite:
-//                        Button favButton = (Button) findViewById(R.id.action_favorite);
-//                        favButton.setBackgroundResource(R.drawable.ic_action_name_gold_favorite);
-//                        break;
                     default:
                         break;
                 }
@@ -213,6 +207,14 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                     }
                 }).setNegativeButton(android.R.string.no, null).show();
         }
+    }
+    public void setFavorited() {
+        final int fragId = getFragId(getCurrentFragment());
+        Item item = db.getSingleItem(fragId);
+        db.setFavorite(fragId, (item.isFavorite() == 1? 0 : 1));
+
+        Log.d("singleitemactivity", String.valueOf(item.isFavorite()));
+
     }
 
     private void updateFragments() {
@@ -263,15 +265,16 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
         super.onCreateOptionsMenu(menu);
         getMenuInflater().inflate(R.menu.menu, menu);
 
-        MenuItem item = menu.findItem(R.id.sort);
-        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+//        MenuItem item = menu.findItem(R.id.sort);
+//        Spinner spinner = (Spinner) MenuItemCompat.getActionView(item);
+
+        Spinner spinner = (Spinner) findViewById(R.id.sortSpinner);
         ArrayAdapter<CharSequence> spinner_Adapter = ArrayAdapter.createFromResource(this, R.array.sort_spinner_item_array, R.layout.sort_spinner);
         spinner_Adapter.setDropDownViewResource(R.layout.sort_spinner);
 
         spinner.setAdapter(spinner_Adapter);
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 ((TextView) view).setText("Sort");
                 Toast.makeText(view.getContext(), parent.getSelectedItem().toString(), Toast.LENGTH_SHORT).show();
@@ -280,8 +283,10 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
             }
             public void onNothingSelected(AdapterView<?> arg0) {}
         });
+
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch(item.getItemId()){
@@ -293,6 +298,7 @@ public class SingleItemDisplayActivity extends AppCompatActivity{
                 return super.onOptionsItemSelected(item);
         }
     }
+
     public ArrayListFragment getCurrentFragment() {
         if(mViewPager.getChildCount() >0) {
             int currentPage = mViewPager.getCurrentItem();

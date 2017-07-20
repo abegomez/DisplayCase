@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-
+    android:background="@color/colorPrimary"
     app:contentInsetStart="0dp"
     app:itemIconTint="@color/White"
     app:itemTextColor="@color/White"
@@ -30,8 +30,15 @@
             android:visibility="visible"
             android:icon="@android:drawable/ic_menu_add"
             android:title="@string/navbar_add"
-            app:showAsAction="always" />
-
+            />
+        <Spinner
+            android:id="@+id/sortSpinner"
+            android:title="Sort"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@+id/action_add"
+            android:layout_centerInParent="true"
+            />
         <Button
             android:id="@+id/action_edit"
             android:visibility="visible"
@@ -41,7 +48,7 @@
             android:enabled="true"
             android:icon="@android:drawable/ic_menu_edit"
             android:title="@string/navbar_edit"
-            app:showAsAction="always" />
+             />
 
         <Button
             android:id="@+id/action_delete"
@@ -53,7 +60,7 @@
             android:enabled="true"
             android:icon="@android:drawable/ic_menu_delete"
             android:title="@string/navbar_delete"
-            app:showAsAction="always" />
+            />
 
 
     </RelativeLayout>

@@ -19,7 +19,7 @@ public class Item implements Parcelable{
     protected String purchased;
     protected String condition;
     protected String collection;
-    protected int favorite;
+    protected int favorite=0;
     protected String dateAdded;
 
     public  Item() {}

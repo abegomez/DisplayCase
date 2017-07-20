@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -59,15 +60,15 @@ public class DbHandler extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE " + TABLE_ITEMS
                 + "("
-                + KEY_ID + " INTEGER PRIMARY KEY,"
-                + KEY_NAME + " TEXT,"
-                + KEY_DESCRIPTION + " TEXT,"
-                + KEY_ISBN + " TEXT,"
-                + KEY_IMAGE + " TEXT,"
+                + KEY_ID + " INTEGER PRIMARY KEY, "
+                + KEY_NAME + " TEXT, "
+                + KEY_DESCRIPTION + " TEXT, "
+                + KEY_ISBN + " TEXT, "
+                + KEY_IMAGE + " TEXT, "
                 + KEY_PURCHASE_DATE + " TEXT,"
-                + KEY_CONDITION + " TEXT,"
-                + KEY_DATE_ADDED + " TEXT default current_timestamp,"
-                + KEY_FAVORITE + " INTEGER"
+                + KEY_CONDITION + " TEXT, "
+                + KEY_DATE_ADDED + " TEXT default current_timestamp, "
+                + KEY_FAVORITE + " INTEGER "
                 + ")";
         db.execSQL(CREATE_CONTACTS_TABLE);
     }
@@ -114,14 +115,23 @@ public class DbHandler extends SQLiteOpenHelper {
         System.out.println("updating: " +item.getName());
         return db.update(TABLE_ITEMS, values, "id = ?", whereArgs);
     }
-    public Integer updateFavorite(Item item) {
+
+    public void setFavorite(Integer id, int isFav) {
         SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        String[] whereArgs = {String.valueOf(item.getId())};
-        values.put(KEY_FAVORITE, item.isFavorite());
-        System.out.println(item.getName() + "Favorited!");
-        return db.update(TABLE_ITEMS, values, "id=?", whereArgs);
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_FAVORITE, isFav);
+        db.update(TABLE_ITEMS, cv, "id = " + id, null);
+        Log.d("dbhandler", String.valueOf(isFav));
     }
+//
+//    public Integer updateFavorite(Item item) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues values = new ContentValues();
+//        String[] whereArgs = {String.valueOf(item.getId())};
+//        values.put(KEY_FAVORITE, item.isFavorite());
+//        System.out.println(item.getName() + "Favorited!");
+//        return db.update(TABLE_ITEMS, values, "id=?", whereArgs);
+//    }
 
     /**
      * Retrieve database items with specific sorted order
@@ -151,6 +161,7 @@ public class DbHandler extends SQLiteOpenHelper {
             item.setPurchased(res.getString(5));
             item.setCondition(res.getString(6));
             item.setDateAdded(res.getString(7));
+            item.setFavorite(res.getInt(8));
             //get string from each column and put into item
             sortedList.add(item);
             res.moveToNext();
@@ -175,6 +186,7 @@ public class DbHandler extends SQLiteOpenHelper {
             item.setPurchased(res.getString(5));
             item.setCondition(res.getString(6));
             item.setDateAdded(res.getString(7));
+            item.setFavorite(res.getInt(8));
             //get string from each column and put into item
             itemArrayList.add(item);
             res.moveToNext();
@@ -202,6 +214,7 @@ public class DbHandler extends SQLiteOpenHelper {
                 item.setPurchased(res.getString(res.getColumnIndex(KEY_PURCHASE_DATE)));
                 item.setCondition(res.getString(res.getColumnIndex(KEY_CONDITION)));
                 item.setDateAdded(res.getString(res.getColumnIndex(KEY_DATE_ADDED)));
+                item.setFavorite(res.getInt(res.getColumnIndex(KEY_FAVORITE)));
             }
             return item;
         } finally {

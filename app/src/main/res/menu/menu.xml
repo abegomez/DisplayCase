@@ -6,15 +6,6 @@
     >
 
     <item
-        android:id="@+id/sort"
-        android:title="Sort"
-        app:showAsAction="ifRoom"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:actionViewClass="android.widget.Spinner"
-        />
-
-    <item
         android:id="@+id/menuCardView"
         android:title="Card View"
         app:showAsAction="never"

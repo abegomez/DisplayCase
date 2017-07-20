@@ -24,12 +24,9 @@
         app:showAsAction="always" />
 
     <item
-        android:id="@+id/action_favorite"
-        android:enabled="true"
-        android:icon="@android:drawable/btn_star"
-        android:title="@string/navbar_favorite"
-        app:showAsAction="always"
-        android:checkable="true"/>
-
-
+        android:id="@+id/sortSpinner"
+        android:title="Sort"
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.Spinner"
+        />
 </menu>
