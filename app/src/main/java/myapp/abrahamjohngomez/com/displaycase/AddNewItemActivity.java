@@ -227,13 +227,24 @@ public class AddNewItemActivity extends AppCompatActivity implements View.OnClic
      * Zooms in or out when image is clicked
      */
     private void onImageClick() {
+        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         System.out.println("image clicked");
-        ImageView zoomedImaged =  (ImageView) findViewById(R.id.expanded_image);
-        if(zoomedImaged.getVisibility() != View.VISIBLE) {
-            zoomedImaged.setImageBitmap(bitmap);
-            zoomedImaged.setVisibility(View.VISIBLE);
-        }else {
-            zoomedImaged.setVisibility(View.GONE);
+
+        Log.d("output dir: ", getExternalFilesDir(Environment.DIRECTORY_PICTURES).getAbsolutePath());
+
+        //if intent has available activity(camera)
+        if(takePictureIntent.resolveActivity(getPackageManager()) != null) {
+            try {
+                photoFile = createImageFile();
+            } catch (IOException e) {
+
+                Log.d("ioerror", e.toString());
+            }
+            if(photoFile !=null) {
+                photoUri = FileProvider.getUriForFile(this, "myapp.abrahamjohngomez.com.displaycase.fileprovider", photoFile);
+                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(takePictureIntent, CAMERA_IMAGE_REQUEST);
+            }
         }
     }
 
